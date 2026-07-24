@@ -1,0 +1,14 @@
+---
+/**
+ * The hub essay. PHASE 1 renders the deck only — the essay itself is
+ * written in voice at phase 3, the teaser and colophon land with it.
+ */
+import Shell from '../layouts/Shell.astro';
+
+const deck = 'Nobody has to lie for a number to mislead you. Here, you do it yourself.';
+---
+
+<Shell title="Statistical Illusions" description={deck}>
+  <h1>Statistical Illusions</h1>
+  <p class="lede">{deck}</p>
+</Shell>

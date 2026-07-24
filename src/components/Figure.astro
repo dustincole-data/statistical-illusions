@@ -1,0 +1,59 @@
+---
+/**
+ * Figure.astro — THE figure. There is exactly one chart component on this
+ * site; the Reveal transforms the same visual rather than drawing a second
+ * one, and the hub teaser is this same component in another mode.
+ *
+ * Figure owns the frame: the panel, the readout live region, the legend and
+ * caption rails, the `aria-label` on the <svg> (never a <desc> child — the
+ * redraw wipes children), and the reduced-motion switch, which it publishes
+ * as `data-motion="reduce" | "full"` on the frame so the controller reads one
+ * source of truth instead of re-querying.
+ *
+ * Figure does NOT own the marks. An exhibit controller looks up `#{id}` and
+ * draws into it.
+ */
+interface Props {
+  /** The <svg> element id the exhibit controller draws into. */
+  id: string;
+  title: string;
+  /** Muted continuation of the title, after an en dash. */
+  question?: string;
+  /** Required. Describes the figure's current state for assistive tech. */
+  ariaLabel: string;
+  caption?: string;
+  viewBox?: string;
+}
+
+const { id, title, question, ariaLabel, caption, viewBox = '0 0 880 320' } = Astro.props;
+---
+
+<figure>
+  <div class="figframe" data-motion="full" data-figure={id}>
+    <div class="figtop">
+      <p class="figtitle">
+        {title}{question && <span class="q"> &ndash; {question}</span>}
+      </p>
+      <div class="readout" aria-live="polite"><slot name="readout" /></div>
+    </div>
+
+    <svg id={id} viewBox={viewBox} width="100%" role="img" aria-label={ariaLabel}></svg>
+
+    <div class="legend"><slot name="legend" /></div>
+    <slot name="controls" />
+  </div>
+  {caption && <figcaption>{caption}</figcaption>}
+</figure>
+
+<script is:inline define:vars={{ id }}>
+  (function () {
+    var frame = document.querySelector('[data-figure="' + id + '"]');
+    if (!frame) return;
+    var mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+    var set = function () {
+      frame.setAttribute('data-motion', mq.matches ? 'reduce' : 'full');
+    };
+    set();
+    mq.addEventListener('change', set);
+  })();
+</script>

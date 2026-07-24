@@ -1,0 +1,50 @@
+/* ============================================================
+   "Statistical Illusions" — SHELL VISUAL SYSTEM  (ticket 04 look-lock)
+   The locked design tokens every exhibit renders into.
+   Register: dcd-light-editorial · Stefaner frame · Bremer data-art
+   · Lupi clean-legend-only · Archivo small type · Namesake finish bar.
+   Palette CVD-validated with the dataviz skill (validate_palette.js):
+   categorical triad null/significant/you passes all gates on the light
+   surface; the warm arm is a spectral magnitude ramp w/ halo+label relief.
+   ============================================================ */
+:root {
+  /* — chrome & ink (calm; light ground) — */
+  --bg:          #F8F9FA;   /* page plane            */
+  --surface:     #FFFFFF;   /* raised surface        */
+  --panel:       #FCFCFB;   /* figure / quiet panel  */
+  --ink:         #16181D;   /* primary ink / titles  */
+  --body:        #2E323B;   /* body copy             */
+  --muted:       #565C68;   /* secondary            */
+  --faint:       #8A909C;   /* labels / axis / meta  */
+  --line:        #E6E8EC;   /* hairline             */
+  --rule:        #16181D;   /* section rule (strong) */
+
+  /* — the human thread: links + the reader's own action ("you") — */
+  --accent:      #4A3AAB;   /* indigo               */
+  --accent-ink:  #3A2D88;
+  --accent-soft: #EDEBF7;
+
+  /* — data-art (colour RESERVED for data; the star of the page) — */
+  --null:        #2E9E96;   /* calm cool noise (p > .05)          */
+  --null-deep:   #0E7E77;   /* very null (p → 1)                  */
+  --thresh:      #9A968D;   /* neutral at the p = .05 line        */
+  --sig-1:       #EBA23C;   /* just crossed .05  (gold)           */
+  --sig-2:       #E1583F;   /* coral                              */
+  --sig-3:       #C42E1A;   /* very low p (hot; gets the halo)    */
+
+  /* — type: Archivo (sans) · Fragment Mono (labels/annotation) —
+       biggest text on the page is 33px; the data-art is the largest thing. */
+  --font-sans: "Archivo", system-ui, "Segoe UI", Arial, sans-serif;
+  --font-mono: "Fragment Mono", ui-monospace, "SFMono-Regular", monospace;
+  --t-hero:   clamp(27px, 4.2vw, 33px);  /* exhibit title       */
+  --t-reveal: clamp(23px, 3.4vw, 29px);  /* the reveal line     */
+  --t-h2:     20px;
+  --t-lede:   19px;
+  --t-body:   17px;
+  --t-small:  14.5px;
+  --t-mono:   12.5px;                     /* tracked, uppercase  */
+
+  /* — space & motion — */
+  --measure: 68ch;                        /* prose line length   */
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);  /* ease-out-expo       */
+}

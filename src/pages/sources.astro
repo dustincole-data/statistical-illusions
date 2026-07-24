@@ -1,0 +1,14 @@
+---
+/**
+ * Tier 3 of the authority spine. PHASE 1 renders the heading only; the
+ * sources themselves, the searchable terms and the code entry land at phase 4.
+ */
+import Shell from '../layouts/Shell.astro';
+
+const description = 'Every primary source behind Statistical Illusions, grouped by illusion.';
+---
+
+<Shell title="Sources — Statistical Illusions" description={description}>
+  <h1>Sources</h1>
+  <p class="lede">{description}</p>
+</Shell>

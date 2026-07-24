@@ -1,0 +1,19 @@
+---
+/**
+ * Illusion 01. PHASE 1 renders the Frame slot only; the remaining six slots
+ * are filled at phase 2 by porting the verified prototype.
+ */
+import Shell from '../layouts/Shell.astro';
+import Slot from '../components/Slot.astro';
+import { bySlug, kickerOf } from '../lib/illusions';
+
+const illusion = bySlug('the-forking-paths')!;
+---
+
+<Shell
+  title={`${illusion.name} — Statistical Illusions`}
+  description={illusion.lede!}
+  illusion={illusion}
+>
+  <Slot slot="frame" label={kickerOf(illusion)} heading={illusion.name} lede={illusion.lede} />
+</Shell>

@@ -1,0 +1,28 @@
+---
+/**
+ * Slot.astro — one of the seven scaffold slots.
+ *
+ * The slot knows nothing about which slot it is; the ORDER is fixed in
+ * Shell.astro, and the page names it (`slot="frame"`, `slot="setup"`, …).
+ * Slot 1 (Frame) is the only one that renders a heading, so it passes
+ * `heading` and `lede` alongside the kicker.
+ */
+interface Props {
+  /** The mono label above the slot. Frame passes the illusion's kicker. */
+  label?: string;
+  /** Slot 1 only: the illusion name, as the page's h1. */
+  heading?: string;
+  /** Slot 1 only: the one-line premise. */
+  lede?: string;
+  id?: string;
+}
+
+const { label, heading, lede, id } = Astro.props;
+---
+
+<section class="slot" id={id}>
+  {label && <span class="kick">{label}</span>}
+  {heading && <h1>{heading}</h1>}
+  {lede && <p class="lede">{lede}</p>}
+  <slot />
+</section>

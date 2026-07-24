@@ -1,0 +1,24 @@
+---
+/**
+ * Sidenote.astro — tier 1 of the authority spine: the citation in the right
+ * gutter, beside the sentence making the claim. Collapses inline under 900px.
+ *
+ * Wraps prose and its note together, because the gutter is a grid column of
+ * the prose block, not a page-level rail.
+ *   <Sidenote>  <p>…the claim…</p>  <Fragment slot="note">…citation…</Fragment>  </Sidenote>
+ */
+interface Props {
+  /** Rendered bold at the head of the note. */
+  title?: string;
+}
+
+const { title } = Astro.props;
+---
+
+<div class="hasnote">
+  <div class="body"><slot /></div>
+  <aside class="note">
+    {title && <b>{title}</b>}
+    <slot name="note" />
+  </aside>
+</div>

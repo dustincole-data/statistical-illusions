@@ -1,0 +1,10 @@
+node_modules
+dist
+.astro
+.vercel
+.env*
+.scratch
+.claude
+og-fonts
+.DS_Store
+*.stackdump

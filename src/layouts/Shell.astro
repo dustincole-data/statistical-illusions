@@ -1,0 +1,121 @@
+---
+/**
+ * Shell.astro — the one shared shell. Chrome, the editorial container, the
+ * sidenote gutter, and the exhibit foot nav.
+ *
+ * An illusion page passes its registry entry (`{ number, name, mechanism,
+ * lede }`) and fills the seven named slots. The SCAFFOLD ORDER IS FIXED
+ * HERE, in the layout — a page cannot reorder it, only fill it. Pages that
+ * are not exhibits (the hub, /sources) use the default slot instead.
+ *
+ * A new exhibit must never need this file edited. See README, "the
+ * graduation contract".
+ */
+import '@fontsource/archivo/latin-400.css';
+import '@fontsource/archivo/latin-500.css';
+import '@fontsource/archivo/latin-600.css';
+import '@fontsource/fragment-mono/latin-400.css';
+import '../styles/tokens.css';
+import '../styles/base.css';
+import { ILLUSIONS, nextLiveAfter, type Illusion } from '../lib/illusions';
+
+interface Props {
+  title: string;
+  description: string;
+  /** Present only on an exhibit route. Drives the title, the chrome marker and the foot. */
+  illusion?: Illusion;
+}
+
+const { title, description, illusion } = Astro.props;
+const next = illusion ? nextLiveAfter(illusion.slug) : undefined;
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta name="twitter:card" content="summary_large_image" />
+  </head>
+
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+
+    <header class="chrome">
+      <div class="chrome-in">
+        <a class="wordmark" href="/" aria-label="Statistical Illusions, home">
+          <b>Statistical Illusions</b>
+          <span class="sub">nobody has to lie</span>
+        </a>
+
+        <nav aria-label="Site">
+          <details class="menu">
+            <summary>Illusions <span aria-hidden="true">▾</span></summary>
+            <ol>
+              {
+                ILLUSIONS.map((i) => (
+                  <li aria-current={illusion?.slug === i.slug ? 'page' : undefined}>
+                    <span class="n">{i.number}</span>
+                    {i.live ? <a href={`/${i.slug}`}>{i.name}</a> : <span class="off">{i.name}</span>}
+                  </li>
+                ))
+              }
+            </ol>
+          </details>
+          <a href="/sources" aria-current={Astro.url.pathname === '/sources' ? 'page' : undefined}>
+            Sources
+          </a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="wrap" id="main">
+      {
+        illusion ? (
+          <article class="piece">
+            <div class="col">
+              {/* The seven slots, in the one fixed order. */}
+              <slot name="frame" />
+              <slot name="setup" />
+              <slot name="operate" />
+              <slot name="commit" />
+              <slot name="reveal" />
+              <slot name="repair" />
+              <slot name="debrief" />
+
+              <div class="exfoot">
+                <div class="ends">
+                  <a class="link" href="/">&larr; back to the essay</a>
+                  {next && (
+                    <a class="link" href={`/${next.slug}`}>
+                      Next illusion: {next.name} &rarr;
+                    </a>
+                  )}
+                </div>
+                <slot name="foot" />
+              </div>
+            </div>
+          </article>
+        ) : (
+          <article class="piece">
+            <div class="col">
+              <slot />
+            </div>
+          </article>
+        )
+      }
+    </main>
+
+    <footer class="sitefoot">
+      <slot name="sitefoot" />
+    </footer>
+  </body>
+</html>
