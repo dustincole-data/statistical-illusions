@@ -1,0 +1,308 @@
+/* ============================================================
+   The seven slots' furniture — scaffold-level, not Illusion 01's.
+
+   Every exhibit's Setup puts a table and a disclosure block on the
+   page, every Commit produces a published card, every Reveal counts
+   things and every Debrief carries its three blocks. So these live
+   with the scaffold: Illusion 02 gets them by filling the same slots,
+   which is the graduation contract holding in CSS as well as in
+   markup. Spends the locked ticket-04 tokens; adds none.
+   ============================================================ */
+
+/* ── Setup · the disclosure block. Left-ruled, not a warning box: this
+      is a dare stated flat, and a piece whose credential is restraint
+      cannot shout the one paragraph that matters most. ── */
+.dare {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-left: 2px solid var(--ink);
+  border-radius: 0 10px 10px 0;
+  padding: 18px 22px;
+  max-width: var(--measure);
+  margin: 26px 0;
+}
+.dare .l {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--faint);
+  margin-bottom: 8px;
+}
+.dare p { margin: 0; color: var(--ink); font-size: var(--t-small); line-height: 1.6 }
+.dare p + p { margin-top: 8px; color: var(--muted) }
+
+/* ── Setup · the complete, un-cherry-picked table ── */
+.tblwrap {
+  max-width: var(--measure);
+  overflow-x: auto;
+  margin: 22px 0 6px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface);
+}
+table { border-collapse: collapse; width: 100%; font-family: var(--font-mono); font-size: 12px }
+th {
+  text-align: right;
+  padding: 9px 12px;
+  color: var(--faint);
+  font-weight: 400;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  font-size: 10.5px;
+  border-bottom: 1px solid var(--line);
+  white-space: nowrap;
+  position: sticky;
+  top: 0;
+  background: var(--surface);
+}
+th:first-child, td:first-child { text-align: left }
+td {
+  padding: 6px 12px;
+  text-align: right;
+  color: var(--body);
+  border-bottom: 1px solid #F1F2F4;
+  white-space: nowrap;
+}
+tbody tr:last-child td { border-bottom: none }
+td.arm-nap { color: var(--accent-ink) }
+.tbl-more {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 9px 12px;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  color: var(--faint);
+  border-top: 1px solid var(--line);
+  flex-wrap: wrap;
+}
+
+/* ── Operate · the knobs. Four cards, one row at the locked 900px
+      column — which is why the track minimum is 192px and not more. ── */
+.knobs {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(192px, 1fr));
+  gap: 14px;
+  margin: 8px 0 0;
+  max-width: 900px;
+}
+.knob {
+  border: 1px solid var(--line);
+  border-radius: 11px;
+  background: var(--surface);
+  padding: 15px 16px 16px;
+}
+.knob .kl {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--faint);
+  margin-bottom: 11px;
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  align-items: baseline;
+}
+.knob .kl .cnt { color: #C0C4CC }
+.opt {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  text-align: left;
+  font-family: var(--font-sans);
+  font-size: 13.5px;
+  color: var(--muted);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 7px;
+  padding: 6px 9px;
+  cursor: pointer;
+  line-height: 1.35;
+  transition: background .16s, color .16s;
+}
+.opt:hover { background: #F4F5F7; color: var(--ink) }
+.opt:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px }
+.opt .dotm {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #D6D9DE;
+  flex-shrink: 0;
+  transition: background .16s;
+}
+/* the reader's own choice, in the same indigo as their mark in the figure */
+.opt[aria-checked="true"] { background: var(--accent-soft); color: var(--accent-ink); font-weight: 500 }
+.opt[aria-checked="true"] .dotm { background: var(--accent) }
+.opt .pv {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  color: #B9BDC6;
+  letter-spacing: .02em;
+}
+.opt[aria-checked="true"] .pv { color: var(--accent) }
+.opt:disabled { opacity: .5 }
+.opt:disabled[aria-checked="true"] { opacity: 1 }
+.opt:disabled:hover { background: transparent; color: var(--muted) }
+.opt:disabled[aria-checked="true"]:hover { background: var(--accent-soft); color: var(--accent-ink) }
+
+/* ── Operate · the justification panel.
+      A panel and not a tooltip, on purpose: tooltips die on touch, the
+      cutoff-survey quotation is far too long for one, and a panel means
+      no choice is ever made without a citation sitting beside it. The
+      min-height keeps the figure from jumping as the text changes. ── */
+.justify {
+  margin-top: 16px;
+  max-width: 900px;
+  border: 1px solid var(--line);
+  border-radius: 11px;
+  background: var(--panel);
+  padding: 16px 18px;
+  min-height: 104px;
+}
+.justify .jl {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--faint);
+  margin-bottom: 8px;
+}
+.justify .jt { color: var(--ink); font-size: var(--t-small); line-height: 1.6; margin: 0; max-width: 78ch }
+.justify .jc {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  color: var(--muted);
+  margin-top: 9px;
+  line-height: 1.55;
+  max-width: 78ch;
+}
+.justify .jc b { color: var(--ink); font-weight: 400; border-bottom: 1px solid var(--line) }
+
+/* ── Commit · the published card ── */
+.pubcard {
+  margin: 22px 0 0;
+  max-width: var(--measure);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 22px 24px;
+  position: relative;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity .5s var(--ease), transform .5s var(--ease);
+}
+.pubcard.on { opacity: 1; transform: none }
+.pubcard .stamp {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--sig-3);
+  border: 1px solid var(--sig-3);
+  border-radius: 3px;
+  padding: 2px 6px;
+  display: inline-block;
+  margin-bottom: 12px;
+}
+.pubcard .finding {
+  font-size: var(--t-lede);
+  line-height: 1.45;
+  color: var(--ink);
+  font-weight: 500;
+  letter-spacing: -0.012em;
+  margin: 0;
+  max-width: 46ch;
+}
+.pubcard .meta {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  color: var(--faint);
+  margin-top: 13px;
+  padding-top: 11px;
+  border-top: 1px solid var(--line);
+  line-height: 1.6;
+}
+
+/* ── Reveal · the line, and the live counters ── */
+.revealline { margin: 30px 0 0; padding: 26px 0 0; border-top: 2px solid var(--ink); max-width: 900px }
+.revealline .r {
+  font-size: var(--t-reveal);
+  line-height: 1.24;
+  color: var(--ink);
+  font-weight: 600;
+  letter-spacing: -0.018em;
+  max-width: 24ch;
+  text-wrap: balance;
+  margin: 0;
+}
+.revealline .r em { color: var(--sig-3); font-style: normal }
+
+/* "computed in your browser" made visible: these climb while the sweep runs */
+.counters {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 14px;
+  margin: 24px 0 0;
+  max-width: 900px;
+}
+.ctr { border: 1px solid var(--line); border-radius: 11px; background: var(--surface); padding: 16px 18px }
+.ctr .cl {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: .11em;
+  text-transform: uppercase;
+  color: var(--faint);
+  margin-bottom: 7px;
+  line-height: 1.5;
+}
+.ctr .cv { font-size: 26px; font-weight: 600; color: var(--ink); letter-spacing: -0.02em; line-height: 1.1 }
+.ctr .cv.sig { color: var(--sig-3) }
+.ctr .cv.null { color: var(--null-deep) }
+.ctr .cn { font-family: var(--font-mono); font-size: 11px; color: var(--faint); margin-top: 6px; line-height: 1.5 }
+.ctr.pending .cv { color: #C9CDD4 }
+/* the line the Repair lands on, once the counters have both filled */
+.counters + .body { margin-top: 24px }
+
+/* ── Debrief · three blocks, never merged. The caveat gets its own
+      labelled line rather than becoming fine print in a citation. ── */
+.debrief { margin: 26px 0 0; max-width: var(--measure); display: grid; gap: 0 }
+.dblock { border-top: 1px solid var(--line); padding: 18px 0 }
+.dblock:first-child { border-top: 2px solid var(--ink) }
+.dblock .dl {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+  color: var(--faint);
+  margin-bottom: 9px;
+}
+.dblock .dt { color: var(--ink); font-size: var(--t-small); line-height: 1.65; margin: 0 }
+.dblock .dt b { font-weight: 600 }
+
+/* ── per-path detail on hover. Never the only route to a fact: the
+      counters state every finding in text. ── */
+.tip {
+  position: fixed;
+  pointer-events: none;
+  z-index: 40;
+  background: var(--ink);
+  color: #fff;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  padding: 6px 9px;
+  border-radius: 6px;
+  opacity: 0;
+  transform: translateY(3px);
+  transition: opacity .12s;
+  white-space: nowrap;
+  letter-spacing: .02em;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pubcard, .opt, .tip { transition: none !important }
+}

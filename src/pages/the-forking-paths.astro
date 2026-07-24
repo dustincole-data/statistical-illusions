@@ -1,10 +1,19 @@
 ---
 /**
- * Illusion 01. PHASE 1 renders the Frame slot only; the remaining six slots
- * are filled at phase 2 by porting the verified prototype.
+ * Illusion 01 · The Forking Paths.
+ *
+ * The markup for all seven slots, ported from the verified ticket-06
+ * prototype. Every number rendered below is a placeholder that
+ * `scripts/forking-paths.ts` fills in the reader's browser — there is no
+ * dataset behind this page and nothing here is server-rendered.
+ *
+ * Copy is the prototype's in-register draft. The voice pass runs at phase 5,
+ * on the rendered page, where it can be read against the figure it sits beside.
  */
 import Shell from '../layouts/Shell.astro';
 import Slot from '../components/Slot.astro';
+import Figure from '../components/Figure.astro';
+import Sidenote from '../components/Sidenote.astro';
 import { bySlug, kickerOf } from '../lib/illusions';
 
 const illusion = bySlug('the-forking-paths')!;
@@ -15,5 +24,331 @@ const illusion = bySlug('the-forking-paths')!;
   description={illusion.lede!}
   illusion={illusion}
 >
-  <Slot slot="frame" label={kickerOf(illusion)} heading={illusion.name} lede={illusion.lede} />
+  {/* ── 1 · FRAME — orient a cold arrival, assume zero prior reading ── */}
+  <Slot slot="frame" label={kickerOf(illusion)} heading={illusion.name} lede={illusion.lede}>
+    <Sidenote title="Why p < 0.05?">
+      <p>
+        Below is a study with nothing in it. Not a weak effect, not a small one — nothing. Forty
+        subjects were drawn from a random number generator in your browser a moment ago, and the
+        difference between the two groups was set to exactly zero.
+      </p>
+      <p>
+        You are going to find a publishable result in it anyway. Every choice you make on the way
+        there will be one a careful person has defended in print, and I will show you who defended
+        it. <b>The question this answers is not whether it can be done. It is how long it takes
+        you.</b>
+      </p>
+      <Fragment slot="note">
+        A convention, not a law — the odds a pure-chance result slips through a single test. Run
+        twenty honest tests on nothing and, on average, one clears the bar anyway.
+      </Fragment>
+    </Sidenote>
+  </Slot>
+
+  {/* ── 2 · SETUP — the illusion must survive full disclosure ── */}
+  <Slot slot="setup" id="s-setup" label="Setup" title="The study">
+    <div class="body">
+      <p>
+        Forty adults. Half took a twenty-minute nap; half sat quietly with a magazine. Afterwards
+        everyone did the same short computer task, and three things were recorded: how fast they
+        responded, how accurately, and how awake they said they felt. Age, sex, and hours slept the
+        night before were noted at intake, as they would be in any real protocol.
+      </p>
+    </div>
+
+    <div class="dare">
+      <div class="l">Full disclosure, before you start</div>
+      <p>
+        There is no nap effect in this data. The two groups are drawn from the same distribution and
+        the true difference is exactly zero, by construction.
+      </p>
+      <p>
+        Nothing is hidden from you here and nothing will be revealed later that was withheld now.
+        The seed is in the URL, so this exact study is reproducible and shareable. Everything below
+        is computed in your browser as you read.
+      </p>
+    </div>
+
+    <div class="tblwrap">
+      <table aria-label="The forty subjects, complete">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Group</th>
+            <th>Reaction&nbsp;time</th>
+            <th>Accuracy</th>
+            <th>Alertness</th>
+            <th>Sex</th>
+            <th>Age</th>
+            <th>Slept</th>
+          </tr>
+        </thead>
+        <tbody id="datarows"></tbody>
+      </table>
+      <div class="tbl-more">
+        <span id="tblcount">showing 8 of 40 subjects</span>
+        <button class="btn ghost small" id="showall">Show all 40</button>
+      </div>
+    </div>
+    <p class="tblnote">
+      Reaction time in milliseconds (lower is faster) · accuracy in percent · alertness self-rated
+      1–7. Generated from a seeded normal draw; the three measures correlate at about
+      r&nbsp;=&nbsp;.5, as measures of one construct do.
+    </p>
+  </Slot>
+
+  {/* ── 3 · OPERATE — the reader builds the illusion, with citations ── */}
+  <Slot slot="operate" id="s-operate" label="Operate" title="Your analysis">
+    <Sidenote title="Simmons, Nelson & Simonsohn (2011)">
+      <p>
+        Four decisions. None of them is cheating, and none of them is even unusual — each one has
+        been made, and justified, in the published literature. Turn them until the number at the
+        bottom right of the panel drops below 0.05.
+      </p>
+      <Fragment slot="note">
+        put four such decisions together and measured how often pure noise produced a “significant”
+        result: 60.7%. <i>Psychological Science</i> 22(11), Table 1.
+      </Fragment>
+    </Sidenote>
+
+    <div class="knobs" id="knobs"></div>
+
+    <div class="justify" aria-live="polite">
+      <div class="jl">Why this choice is defensible</div>
+      <p class="jt" id="jt">
+        Hover or select any option above. Every one carries a real, published justification — that
+        is what makes this an accident rather than a fraud.
+      </p>
+      <div class="jc" id="jc"></div>
+    </div>
+
+    <Figure
+      id="field"
+      viewBox="0 0 880 300"
+      title="Your path through the garden"
+      question="one analysis at a time"
+      ariaLabel="A horizontal p-value axis. Your current analysis is marked in indigo; paths you have already tried are shown as hollow rings."
+      caption="Fig. 1 — Welch two-sample t-tests computed live on the forty subjects above. The horizontal axis is the p-value, compressed so the 0.05 convention sits where it does in practice: near the end, and easy to reach."
+    >
+      <Fragment slot="readout">
+        <span>p&nbsp;=&nbsp;<span id="ro-p" class="big">—</span></span>
+        <span class="mono tried"><span id="ro-tried">0</span> paths tried</span>
+      </Fragment>
+
+      <Fragment slot="legend">
+        <div class="lg"><span class="swatch you"></span> your current analysis</div>
+        <div class="lg"><span class="swatch tried"></span> a path you already tried</div>
+        <div class="lg rampwrap" id="lg-ramp" hidden>
+          <div class="ramp"></div>
+          <div class="rampscale"><span>p = 1</span><span>0.05</span><span>p → 0</span></div>
+        </div>
+      </Fragment>
+
+      <Fragment slot="controls">
+        <div class="control">
+          <button class="btn ghost" id="reset">Reset the analysis</button>
+          <button class="btn ghost" id="more" hidden>Collect 10 more subjects →</button>
+          <span class="ctlnote" id="opnote">Nothing here is irreversible. Yet.</span>
+        </div>
+      </Fragment>
+    </Figure>
+  </Slot>
+
+  {/* ── 4 · COMMIT — victim becomes operator. One way. ── */}
+  <Slot
+    slot="commit"
+    id="s-commit"
+    label="Commit"
+    title="Publish it"
+    lockNote="— unlocks when an analysis crosses p < 0.05"
+    locked
+  >
+    <div class="body">
+      <p>
+        This is the step that separates an exploration from a finding. Once you publish, the other
+        paths stop existing — not because anyone destroyed them, but because nobody ever hears about
+        them.
+      </p>
+    </div>
+
+    <div class="control">
+      <button class="btn commit" id="publish" disabled>Publish this finding</button>
+      <span class="ctlnote">One way. There is no unpublish button, here or anywhere.</span>
+    </div>
+
+    <div class="pubcard" id="pubcard" aria-live="polite">
+      <span class="stamp">Published</span>
+      <p class="finding" id="finding">—</p>
+      <div class="meta" id="pubmeta"></div>
+    </div>
+  </Slot>
+
+  {/* ── 5 · REVEAL — the same figure, transformed. Never a second chart. ── */}
+  <Slot
+    slot="reveal"
+    id="s-reveal"
+    label="Reveal"
+    title="The paths you didn’t take"
+    lockNote="— unlocks when you publish"
+    locked
+  >
+    <div class="revealline">
+      <p class="r">You took one path. There were <em><span id="pathtotal">251</span></em>.</p>
+    </div>
+
+    <Sidenote title="Gelman & Loken (2013)">
+      <p id="revealbody">
+        The figure above has not changed its axis, its scale, or its data. Every other analysis you
+        could have run on these same forty subjects has simply been drawn in alongside yours. Your
+        published finding is the indigo ring.
+      </p>
+      <Fragment slot="note">
+        named this the garden of forking paths: the analyst need not run every path for the error
+        rate to be real. One path, chosen after seeing the data, is enough.
+      </Fragment>
+    </Sidenote>
+
+    <div class="counters">
+      <div class="ctr">
+        <div class="cl">Paths in your garden</div>
+        <div class="cv" id="c-paths">—</div>
+        <div class="cn" id="c-pathsnote">
+          3 measures × 7 subgroups × 3 outlier rules × 4 stopping points
+        </div>
+      </div>
+      <div class="ctr">
+        <div class="cl">Of those, “significant”</div>
+        <div class="cv sig" id="c-sig">—</div>
+        <div class="cn" id="c-signote">on data with no effect in it</div>
+      </div>
+      <div class="ctr pending" id="ctr-many">
+        <div class="cl">Studies like yours containing at least one significant path</div>
+        <div class="cv sig" id="c-many">—</div>
+        <div class="cn" id="c-manynote">not yet run</div>
+      </div>
+      <div class="ctr pending" id="ctr-repro">
+        <div class="cl">One measure only — reproducing the 2011 paper</div>
+        <div class="cv sig" id="c-repro">—</div>
+        <div class="cn" id="c-repronote">published figure: 60.7%</div>
+      </div>
+    </div>
+
+    <div class="control">
+      <button class="btn" id="runmany">Run 600 more studies →</button>
+      <span class="ctlnote" id="manynote">
+        Fresh noise each time, same four knobs, computed here. Takes about a second.
+      </span>
+    </div>
+  </Slot>
+
+  {/* ── 6 · REPAIR — non-negotiable. The number has to change. ── */}
+  <Slot
+    slot="repair"
+    id="s-repair"
+    label="Repair"
+    title="The same move, made honestly"
+    lockNote="— unlocks after the reveal"
+    locked
+  >
+    <Sidenote title="The authors’ own answer.">
+      <p>
+        Nothing about the four knobs was wrong. What was wrong was choosing among them after seeing
+        the data. So make one change and nothing else: write down which measure, which subgroup,
+        which outlier rule and which stopping point you will use <b>before</b> the data exists — then
+        run the same six hundred studies and look only at that path.
+      </p>
+      <Fragment slot="note">
+        In 2018 Simmons, Nelson &amp; Simonsohn withdrew their most-quoted recommendation and named
+        preregistration instead. <i>Perspectives on Psychological Science</i> 13(2).
+      </Fragment>
+    </Sidenote>
+
+    <div class="control">
+      <button class="btn" id="runpre">Pre-register one path, run the same 600 →</button>
+      <span class="ctlnote">Same generator. Same seeds. Same test. One path each.</span>
+    </div>
+
+    <div class="counters">
+      <div class="ctr" id="ctr-hack">
+        <div class="cl">Free to choose after the fact</div>
+        <div class="cv sig" id="c-hack">—</div>
+        <div class="cn">of 600 studies produced a “significant” finding</div>
+      </div>
+      <div class="ctr pending" id="ctr-pre">
+        <div class="cl">One path, fixed in advance</div>
+        <div class="cv null" id="c-pre">—</div>
+        <div class="cn" id="c-prenote">nominal false-positive rate: 5%</div>
+      </div>
+    </div>
+
+    <div class="body repaired" id="repairbody" hidden>
+      <p>
+        The data did not change. The generator did not change. The test did not change. The only
+        thing that changed is that the analysis was decided before the numbers arrived, and the
+        error rate fell back to the one the convention promises.
+      </p>
+    </div>
+  </Slot>
+
+  {/* ── 7 · DEBRIEF — absence, authority, caveat. Three blocks, never merged. ── */}
+  <Slot
+    slot="debrief"
+    id="s-debrief"
+    label="Debrief"
+    title="What just happened"
+    lockNote="— unlocks after the repair"
+    locked
+  >
+    <div class="body">
+      <p>
+        You did deliberately, in about ninety seconds, a thing that usually happens slowly and
+        without anyone noticing. That distinction matters more than it looks. The researchers who
+        described this were careful to separate <b>fishing</b> — running many analyses and reporting
+        the best — from the far more common case: running <b>one</b> analysis, chosen honestly, in a
+        world where different data would have led the same honest person to a different choice. The
+        second one leaves no trace in the paper, in the lab notebook, or in the memory of the person
+        who did it.
+      </p>
+    </div>
+
+    <div class="debrief">
+      <div class="dblock">
+        <div class="dl">What was absent from the table</div>
+        <p class="dt">
+          The paths you didn’t take. Nothing was hidden and nothing was falsified — the other 250
+          analyses simply never had to be mentioned, because they were never run.
+        </p>
+      </div>
+      <div class="dblock">
+        <div class="dl">Who caught this</div>
+        <p class="dt">
+          <b>Joseph Simmons, Leif Nelson &amp; Uri Simonsohn</b> — “False-Positive Psychology,”
+          <i>Psychological Science</i> 22(11), 2011, and their continuing work at
+          <a class="link" href="https://datacolada.org">Data Colada</a>, their
+          research-credibility blog. <b>Andrew Gelman &amp; Eric Loken</b> named the garden of
+          forking paths (2013; <i>American Scientist</i> 102(6), 460, 2014). <b>John Ioannidis</b>
+          modelled the consequences for the literature (<i>PLoS Medicine</i> 2(8), 2005).
+        </p>
+      </div>
+      <div class="dblock">
+        <div class="dl">One honest caveat</div>
+        <p class="dt">
+          The 2011 paper’s most-quoted rule — require at least twenty observations per cell — was
+          withdrawn by its own authors in 2018, because it “led people to focus on the wrong aspect
+          of disclosure.” Their current answer is preregistration, which is what the repair above
+          actually does. And Ioannidis’s title is a modelling result under stated assumptions, not
+          an audit of the literature; there is a standing peer-reviewed critique.
+        </p>
+      </div>
+    </div>
+  </Slot>
+
+  {/* Release the freeze. The exhibit's last affordance, and the ~8%'s exit. */}
+  <Fragment slot="foot">
+    <button class="btn ghost" id="rerun">↻ Run it again with a fresh sample</button>
+  </Fragment>
 </Shell>
+
+<script>
+  import '../scripts/forking-paths';
+</script>

@@ -35,10 +35,41 @@ Fonts are self-hosted via `@fontsource` (Archivo 400/500/600, Fragment Mono 400,
 ```
 npm install
 npm run dev        # verify in a browser; this is the check that counts
-npm run build
+npm test           # fast, every commit
+npm run verify     # the reproduction gate, ~13s
+npm run build      # runs verify first, and fails on drift
 ```
 
 Node 22.
+
+## Verification
+
+The load-bearing claim of this piece is that a browser with no dataset and no server behind it
+independently reproduces a published result. That claim is checked rather than asserted, which is
+part of why this repo is public.
+
+`npm test` pins the statistics core against values that exist outside this repo — the t-table
+criticals, Γ at the factorials — then pins the illusion itself: each subgroup filter, each outlier
+rule, the path enumeration, an order-sensitive checksum over every p-value in a fixed-seed garden,
+and the finding sentence including its computed direction.
+
+`npm run verify` re-runs the ticket-06 simulation against the code that actually ships, and
+**fails the build on drift**. Every row is checked twice: an exact count against a pinned golden,
+which is deterministic because the simulation is seeded, and the derived percentage against the
+figure the piece publishes, so a future re-pin cannot quietly walk a number away from its claim.
+
+| Assertion | Published figure |
+|---|---|
+| Three measures, at least one significant path | 92.0% |
+| One measure only | 59.7%, against a published 60.7% |
+| A single path fixed in advance | 4.7%, nominal 5% |
+| No significant path anywhere at n = 40 | 8.2% |
+| Uncooperative samples rescued at n = 50 / 60 / 70 | 41% / 62% / 75% |
+
+The gate runs seeds 1..N; the reader's live 600-study sweep runs a different seed family and shows
+its own margin of error. Agreement between two families is worth more than agreement with itself.
+A wrong degrees-of-freedom or a trim off by one produces numbers that still look entirely
+plausible, which is exactly why this cannot be a matter of reading the output and nodding.
 
 ## Routes
 
@@ -70,7 +101,10 @@ holds in code if the shell exposes a real interface, so here it is.
   **There is exactly one chart component on this site.** The Reveal transforms the same visual; the
   hub teaser is the same component in another mode.
 - **`components/Sidenote.astro`** is the right-gutter citation, collapsing inline under 900px.
-- **`src/lib/stats.ts`** (phase 2) is illusion-agnostic. Illusion 04 imports the same core.
+- **`src/lib/stats.ts`** and **`src/lib/rng.ts`** are illusion-agnostic. Illusion 04 imports the
+  same core. An illusion's own rule set lives beside its controller instead — for Illusion 01 that
+  is `src/scripts/forking-paths.model.ts`, a pure module with no DOM in it, which is what makes the
+  numbers testable rather than trapped inside an event handler.
 
 **A new exhibit that requires editing `Shell.astro` is the signal that the contract broke.**
 

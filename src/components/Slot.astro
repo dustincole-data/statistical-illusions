@@ -5,23 +5,49 @@
  * The slot knows nothing about which slot it is; the ORDER is fixed in
  * Shell.astro, and the page names it (`slot="frame"`, `slot="setup"`, …).
  * Slot 1 (Frame) is the only one that renders a heading, so it passes
- * `heading` and `lede` alongside the kicker.
+ * `heading` and `lede` alongside the kicker. Slots 2–7 pass a `title` and get
+ * the slot header rail instead.
+ *
+ * `locked` is scaffold-level, not exhibit-level: Commit is always after
+ * Operate, Reveal always after Commit. A gated slot renders dimmed and inert
+ * until the controller flips `data-locked` to "0".
  */
 interface Props {
   /** The mono label above the slot. Frame passes the illusion's kicker. */
   label?: string;
   /** Slot 1 only: the illusion name, as the page's h1. */
   heading?: string;
+  /** Slots 2–7: the slot's own title, beside the label. */
+  title?: string;
   /** Slot 1 only: the one-line premise. */
   lede?: string;
+  /** Start dimmed and inert. */
+  locked?: boolean;
+  /** The note explaining what unlocks it. The controller rewrites this. */
+  lockNote?: string;
   id?: string;
 }
 
-const { label, heading, lede, id } = Astro.props;
+const { label, heading, title, lede, locked, lockNote, id } = Astro.props;
 ---
 
-<section class="slot" id={id}>
-  {label && <span class="kick">{label}</span>}
+{/* `inert` is what actually gates a locked slot: dimming it and killing
+    pointer-events still leaves every control inside it in the tab order, which
+    would let a keyboard reader fire the Reveal before committing to anything. */}
+<section class="slot" id={id} data-locked={locked ? '1' : undefined} inert={locked} aria-label={title}>
+  {
+    title ? (
+      <div class="sh">
+        {label && <span class="kick">{label}</span>}
+        {/* An h2, not a span: seven sections with no heading outline leaves a
+            screen-reader user scrolling a wall. Styled identically. */}
+        <h2 class="st">{title}</h2>
+        {lockNote && <span class="lockmsg">{lockNote}</span>}
+      </div>
+    ) : (
+      label && <span class="kick">{label}</span>
+    )
+  }
   {heading && <h1>{heading}</h1>}
   {lede && <p class="lede">{lede}</p>}
   <slot />
