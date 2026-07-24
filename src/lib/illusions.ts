@@ -38,7 +38,8 @@ export const ILLUSIONS: Illusion[] = [
     slug: 'the-reversal',
     name: 'The Reversal',
     mechanism: 'A HIDDEN VARIABLE',
-    live: false,
+    lede: 'He is better every year, and he still loses.',
+    live: true,
   },
   {
     number: '03',

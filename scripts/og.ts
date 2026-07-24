@@ -203,6 +203,7 @@ async function main() {
   await mkdir(OUT_DIR, { recursive: true });
 
   const forkingPaths = ILLUSIONS[0]!;
+  const reversal = ILLUSIONS[1]!;
   const routes: Array<{ slug: string; opts: CardOpts }> = [
     {
       slug: 'index',
@@ -217,6 +218,14 @@ async function main() {
         kicker: kickerOf(forkingPaths),
         title: forkingPaths.name,
         description: forkingPaths.lede!,
+      },
+    },
+    {
+      slug: 'the-reversal',
+      opts: {
+        kicker: kickerOf(reversal),
+        title: reversal.name,
+        description: reversal.lede!,
       },
     },
     {

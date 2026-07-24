@@ -40,6 +40,18 @@ import {
   MEASURES,
   OUTLIERS,
 } from '../src/scripts/forking-paths.model';
+import {
+  JUSTICE as R_JUSTICE,
+  JETER as R_JETER,
+  VIEWS as R_VIEWS,
+  flipT,
+  fmtAvg,
+  pooledAt,
+  pooledReal,
+  seasonAvg,
+  seasonWinner,
+  winnerAt,
+} from '../src/scripts/the-reversal.model';
 
 const TRIALS_GARDEN = 4_000;
 const TRIALS_SINGLE = 20_000;
@@ -180,6 +192,51 @@ for (let i = 0; i < 200; i++) {
         }
 }
 if (droppedChecked === 0) failures.push('enumeration: no untestable path seen in 200 samples');
+
+// ── Illusion 02 · The Reversal — deterministic, no RNG ──────────────────────
+//
+// No simulation here: the data is fixed and public, so the gate pins the exact
+// published averages, the two winners, and the single flip point. A typo in an
+// at-bat count moves a printed average and fails the build, the same way a bad
+// degrees-of-freedom would upstream.
+
+const revFail: string[] = [];
+const eq = (label: string, got: string, want: string) => {
+  if (got !== want) revFail.push(`${label}: got ${got}, expected ${want}`);
+};
+
+// per-season averages (which pin the twelve integers, since averages derive from them)
+eq('Justice season averages', R_JUSTICE.seasons.map((s) => fmtAvg(seasonAvg(s))).join(' '), '.253 .321 .329');
+eq('Jeter season averages', R_JETER.seasons.map((s) => fmtAvg(seasonAvg(s))).join(' '), '.250 .314 .291');
+
+// Justice ahead every season; Jeter ahead on both real totals
+if (![0, 1, 2].every((i) => seasonWinner(i) === 'Justice'))
+  revFail.push('season winners: Justice does not lead every season');
+
+for (const [name, idx, jus, jet, fT] of [
+  ['two-season', R_VIEWS.two, '.270', '.310', 0.1137],
+  ['three-season', R_VIEWS.three, '.298', '.300', 0.9122],
+] as const) {
+  eq(`${name} Justice pooled`, fmtAvg(pooledReal(R_JUSTICE, idx)), jus);
+  eq(`${name} Jeter pooled`, fmtAvg(pooledReal(R_JETER, idx)), jet);
+  if (winnerAt(0, idx) !== 'Justice') revFail.push(`${name}: equal weighting does not favour Justice`);
+  if (winnerAt(1, idx) !== 'Jeter') revFail.push(`${name}: real weighting does not favour Jeter`);
+  if (Math.abs(flipT(idx) - fT) > 0.001) revFail.push(`${name} flip point: ${flipT(idx).toFixed(4)}, expected ~${fT}`);
+  // home is the real average exactly, not merely close
+  for (const p of [R_JUSTICE, R_JETER])
+    if (Math.abs(pooledAt(p, 1, idx) - pooledReal(p, idx)) > 1e-12)
+      revFail.push(`${name} ${p.name}: home weighting is not the real pooled average`);
+}
+
+console.log('  The Reversal — Justice ahead every season, Jeter ahead on the total:');
+console.log(
+  `    two-season   Justice ${fmtAvg(pooledReal(R_JUSTICE, R_VIEWS.two))} · Jeter ${fmtAvg(pooledReal(R_JETER, R_VIEWS.two))} · flip @ ${flipT(R_VIEWS.two).toFixed(4)}`,
+);
+console.log(
+  `    three-season Justice ${fmtAvg(pooledReal(R_JUSTICE, R_VIEWS.three))} · Jeter ${fmtAvg(pooledReal(R_JETER, R_VIEWS.three))} · flip @ ${flipT(R_VIEWS.three).toFixed(4)}`,
+);
+console.log(`    ${revFail.length ? revFail.length + ' problem(s)' : 'ok'}\n`);
+failures.push(...revFail);
 
 // ── report ──────────────────────────────────────────────────────────────────
 

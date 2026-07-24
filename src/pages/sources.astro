@@ -12,6 +12,7 @@ import Shell from '../layouts/Shell.astro';
 import { bySlug, kickerOf } from '../lib/illusions';
 
 const illusion = bySlug('the-forking-paths')!;
+const reversal = bySlug('the-reversal')!;
 const description = 'Every primary source behind Statistical Illusions, grouped by illusion, plus the code behind the numbers.';
 ---
 
@@ -122,6 +123,104 @@ const description = 'Every primary source behind Statistical Illusions, grouped 
     </div>
   </section>
 
+  {/* ── Illusion 02 ── */}
+  <section class="slot">
+    <div class="sh">
+      <span class="kick">{kickerOf(reversal)}</span>
+      <h2 class="st">{reversal.name}</h2>
+    </div>
+
+    <div class="body">
+      <p>
+        The exhibit's Debrief names who caught this and states one honest caveat. Here is the full
+        record behind both.
+      </p>
+    </div>
+
+    <ol class="srcs">
+      <li>
+        <p class="c">
+          <span class="au">Simpson, E. H.</span> (1951). <i>The Interpretation of Interaction in
+          Contingency Tables.</i> Journal of the Royal Statistical Society: Series B, 13(2), 238–241.
+          The paper that sets out the reversal, and relabels its own table to show the correct answer
+          depends on the story, not the arithmetic.
+        </p>
+        <a class="link mono" href="https://doi.org/10.1111/j.2517-6161.1951.tb00088.x"
+          >doi.org/10.1111/j.2517-6161.1951.tb00088.x</a
+        >
+      </li>
+      <li>
+        <p class="c">
+          <span class="au">Blyth, C. R.</span> (1972). <i>On Simpson's Paradox and the Sure-Thing
+          Principle.</i> Journal of the American Statistical Association, 67(338), 364–366. The paper
+          that gave the effect its name.
+        </p>
+        <a class="link mono" href="https://doi.org/10.1080/01621459.1972.10482387"
+          >doi.org/10.1080/01621459.1972.10482387</a
+        >
+      </li>
+      <li>
+        <p class="c">
+          <span class="au">Pearl, J.</span> (2014). <i>Comment: Understanding Simpson's Paradox.</i>
+          The American Statistician, 68(1), 8–13. Which number is correct is a causal question, not a
+          statistical one, and sometimes the answer is in neither table.
+        </p>
+        <a class="link mono" href="https://doi.org/10.1080/00031305.2014.876829"
+          >doi.org/10.1080/00031305.2014.876829</a
+        >
+      </li>
+      <li>
+        <p class="c">
+          <span class="au">Julious, S. A., &amp; Mullee, M. A.</span> (1994). <i>Confounding and
+          Simpson's paradox.</i> BMJ, 309(6967), 1480–1481. The diabetic-cohort version, where the
+          reversal changes a clinical reading and survives without binning the confounder.
+        </p>
+        <a class="link mono" href="https://doi.org/10.1136/bmj.309.6967.1480"
+          >doi.org/10.1136/bmj.309.6967.1480</a
+        >
+      </li>
+      <li>
+        <p class="c">
+          <span class="au">Baseball-Reference.</span> Standard batting, David Justice
+          (<span class="mono">justida01</span>) and Derek Jeter (<span class="mono">jeterde01</span>),
+          1995–1997. The twelve numbers behind the figure are read off these pages.
+        </p>
+        <a class="link mono" href="https://www.baseball-reference.com/players/j/jeterde01.shtml"
+          >baseball-reference.com/players/j/jeterde01.shtml</a
+        >
+      </li>
+      <li>
+        <p class="c">
+          <span class="au">Ross, K. A.</span> (2004). <i>A Mathematician at the Ballpark.</i> Pi
+          Press. The popularizer of the Justice-Jeter example; the data itself is Baseball-Reference's.
+        </p>
+      </li>
+    </ol>
+
+    <div class="debrief srcextra">
+      <div class="dblock">
+        <div class="dl">Attribution, precisely</div>
+        <p class="dt">
+          Simpson never uses the word "paradox" and never uses the word "causal"; Blyth named it in
+          1972, a reading that rests on Pearl's history of it. Earlier reports of the vanishing
+          association go back to Pearson (1899) and Yule (1903), and sign reversal to Cohen and Nagel
+          (1934). Pearl's account of when to trust which table is argued, not universally settled.
+        </p>
+      </div>
+      <div class="dblock">
+        <div class="dl">The example, and why baseball</div>
+        <p class="dt">
+          The exhibit uses baseball because it needs no causal claim: nobody argues that at-bats
+          cause hits in a way that must be adjusted for, so the reversal is transparently an artifact
+          of weighting. The medical versions each drag a causal argument along, and the famous
+          kidney-stone table (Charig et al., 1986) also carries two traps: "group 2" is a composite
+          severity category rather than a size, and the two treatments ran in non-overlapping eras.
+          They are kept off the page on purpose.
+        </p>
+      </div>
+    </div>
+  </section>
+
   {/* ── The hub outro's Wald panel ── */}
   <section class="slot">
     <div class="sh">
@@ -172,12 +271,12 @@ const description = 'Every primary source behind Statistical Illusions, grouped 
   {/* ── Deferred illusions, stated flatly, no badge ── */}
   <section class="slot">
     <div class="sh">
-      <h2 class="st">Illusions 2 to 4</h2>
+      <h2 class="st">Illusions 3 to 4</h2>
     </div>
     <div class="body">
       <p>
-        The Reversal, The Positive and The Missing Planes are prose in the essay for now. Their
-        sources land here the day each one ships.
+        The Positive and The Missing Planes are prose in the essay for now. Their sources land here
+        the day each one ships.
       </p>
     </div>
   </section>

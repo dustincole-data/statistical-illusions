@@ -1,0 +1,396 @@
+---
+/**
+ * Illusion 02 · The Reversal.
+ *
+ * The seven slots, filled and ported into the shared Shell exactly as the hero
+ * is. Every batting average rendered below is real (Baseball-Reference); the
+ * only thing the reader changes is the weighting, computed in their browser by
+ * `scripts/the-reversal.ts`. No dataset, nothing server-rendered.
+ *
+ * Copy is an in-register draft, voiced against the figure. No em dashes in any
+ * rendered string (the anthology sweep); the protected caveat is rendered with
+ * a colon in place of its dash.
+ */
+import Shell from '../layouts/Shell.astro';
+import Slot from '../components/Slot.astro';
+import Figure from '../components/Figure.astro';
+import Sidenote from '../components/Sidenote.astro';
+import { bySlug, kickerOf } from '../lib/illusions';
+
+const illusion = bySlug('the-reversal')!;
+---
+
+<Shell
+  title={`${illusion.name} · Statistical Illusions`}
+  description={illusion.lede!}
+  illusion={illusion}
+>
+  {/* ── 1 · FRAME ── */}
+  <Slot slot="frame" label={kickerOf(illusion)} heading={illusion.name} lede={illusion.lede}>
+    <Sidenote title="Two hitters, three seasons.">
+      <p>
+        Two baseball players, David Justice and Derek Jeter, and the three seasons where their
+        careers overlapped. One of them hit for the higher batting average in 1995. He did it again
+        in 1996, and again in 1997. Then you add the seasons together and he loses.
+      </p>
+      <p>
+        Nothing below is faked and no season is left out. The averages are the real ones, and you
+        are shown all of them before you touch anything. <b>The only number you will change is how
+        the at-bats are split across the seasons. You will still flip the winner.</b>
+      </p>
+      <Fragment slot="note">
+        This is Simpson’s paradox. It carries a name because it keeps surprising people who do
+        statistics for a living, which is the first sign it is worth ninety seconds of your
+        attention.
+      </Fragment>
+    </Sidenote>
+  </Slot>
+
+  {/* ── 2 · SETUP — the real record, in full ── */}
+  <Slot slot="setup" id="r-setup" label="Setup" title="The record">
+    <div class="body">
+      <p>
+        Here is everything, both men, every season. Batting average is just hits divided by at-bats.
+        The at-bats column is the one to keep an eye on: it is on the table, in plain sight, and it
+        is also the number that is about to do all the work.
+      </p>
+    </div>
+
+    <div class="tblwrap">
+      <table aria-label="Justice and Jeter, batting by season">
+        <thead>
+          <tr><th>Player</th><th>Season</th><th>At-bats</th><th>Hits</th><th>Average</th></tr>
+        </thead>
+        <tbody id="r-rows"></tbody>
+      </table>
+      <div class="tbl-more">
+        <span id="r-tblnote">The higher average each season is coloured.</span>
+        <button class="btn ghost small" id="r-toggle">Add the 1997 season →</button>
+      </div>
+    </div>
+
+    <div class="dare">
+      <div class="l">What is fixed, and what you move</div>
+      <p>
+        Every batting average in that table is real and stays exactly where it is. Nothing is
+        hidden from you now and nothing is revealed later that was withheld.
+      </p>
+      <p>
+        The one thing you will change is how each man’s at-bats are distributed across his seasons.
+        You are not editing the record; you are choosing how to weigh it.
+      </p>
+    </div>
+  </Slot>
+
+  {/* ── 3 · OPERATE — re-weight the at-bats ── */}
+  <Slot slot="operate" id="r-operate" label="Operate" title="Re-weight the seasons">
+    <Sidenote title="Same averages, different weights.">
+      <p>
+        Drag the slider. At one end every season counts equally; at the other, seasons count in
+        proportion to how many times the man actually batted, which is the real record and is marked
+        <b>home</b>. Watch the two diamonds, each man’s combined average, slide along the axis.
+      </p>
+      <Fragment slot="note">
+        No batting average changes as you drag, because none can. You are moving weight, not hits.
+        The winner still crosses over.
+      </Fragment>
+    </Sidenote>
+
+    <div class="rslider-wrap">
+      <div class="rslider-ends">
+        <span>Count each season equally</span>
+        <span>As they actually played · <b>home</b></span>
+      </div>
+      <div class="rslider">
+        <input
+          type="range"
+          id="r-slider"
+          min="0"
+          max="1"
+          step="0.001"
+          value="1"
+          aria-label="Playing-time weighting, from every season equal to the real at-bats"
+        />
+        <span class="rflip" id="r-flip"><span class="rflip-lab">the total flips here</span></span>
+      </div>
+    </div>
+
+    <div class="justify" aria-live="polite">
+      <div class="jl">What this weighting assumes</div>
+      <p class="jt" id="r-just-reason">Move the slider. Both ways of combining the seasons are legitimate; that is the whole problem.</p>
+      <div class="jc" id="r-just-cost"></div>
+    </div>
+
+    <Figure
+      id="rfield"
+      viewBox="0 0 880 300"
+      title="Two hitters on one axis"
+      question="each diamond is a combined average"
+      ariaLabel="A horizontal batting-average axis with two lanes, Justice above and Jeter below. Each season is a dot sized by at-bats; a diamond marks each man's combined average and moves as the weighting changes."
+      caption="Fig. 1 · the real season batting averages, on one axis. Each dot is a season, sized by the at-bats behind it; the diamond is that man’s combined average at the current weighting. Slide it and the diamonds move; nowhere does a batting average change."
+    >
+      <Fragment slot="readout">
+        <span class="mono" style="color:var(--faint)">move the slider to compare the totals</span>
+      </Fragment>
+
+      <Fragment slot="legend">
+        <div class="lg"><span class="rsw rsw-jus"></span> Justice</div>
+        <div class="lg"><span class="rsw rsw-jet"></span> Jeter</div>
+        <div class="lg"><span class="rdiamond"></span> combined average (weighted)</div>
+        <div class="lg"><span class="mono lgk">dot size =</span> at-bats that season</div>
+      </Fragment>
+    </Figure>
+  </Slot>
+
+  {/* ── 4 · COMMIT — name the better hitter, one way ── */}
+  <Slot
+    slot="commit"
+    id="r-commit"
+    label="Commit"
+    title="Name the better hitter"
+    lockNote="· unlocks once you move the slider"
+    locked
+  >
+    <div class="body">
+      <p>
+        Stop wherever you find defensible and say who was the better hitter over these seasons. Pick
+        the one you would put your name to. There is no unpick button, here or in a published table.
+      </p>
+    </div>
+
+    <div class="control rnames">
+      <button class="btn ghost rname" id="r-name-justice">Justice was better</button>
+      <button class="btn ghost rname" id="r-name-jeter">Jeter was better</button>
+      <span class="ctlnote">One way. Choose the weighting you would defend, then choose the man.</span>
+    </div>
+
+    <div class="pubcard" id="r-pubcard" aria-live="polite">
+      <span class="stamp">On the record</span>
+      <p class="finding" id="r-finding">–</p>
+      <div class="meta" id="r-pubmeta"></div>
+    </div>
+  </Slot>
+
+  {/* ── 5 · REVEAL — the same figure, slid home ── */}
+  <Slot
+    slot="reveal"
+    id="r-reveal"
+    label="Reveal"
+    title="The at-bats you weren’t weighing"
+    lockNote="· unlocks when you commit"
+    locked
+  >
+    <div class="revealline">
+      <p class="r">You changed no batting average. You changed the weights, and the winner changed with them.</p>
+    </div>
+
+    <Sidenote title="Simpson (1951) · Blyth (1972)">
+      <p id="r-revealbody">
+        The figure has not changed its axis or its data. The at-bats behind each season are simply
+        drawn to scale now, and the weighting has slid to the real record.
+      </p>
+      <Fragment slot="note">
+        Simpson set the paradox out in 1951; Blyth gave it its name in 1972. It is arithmetic, not a
+        trick: a ratio of sums can point the opposite way from every one of its parts.
+      </Fragment>
+    </Sidenote>
+
+    <div class="counters" aria-live="polite">
+      <div class="ctr">
+        <div class="cl">Seasons Justice hit for the higher average</div>
+        <div class="cv" id="r-c-seasons">–</div>
+        <div class="cn">every season shown</div>
+      </div>
+      <div class="ctr">
+        <div class="cl">Winner once the at-bats are pooled</div>
+        <div class="cv" id="r-c-total">–</div>
+        <div class="cn">the real, weighted average</div>
+      </div>
+      <div class="ctr">
+        <div class="cl">Batting averages you changed</div>
+        <div class="cv" id="r-c-changed">–</div>
+        <div class="cn">the number that makes this honest</div>
+      </div>
+    </div>
+  </Slot>
+
+  {/* ── 6 · REPAIR — which number is right ── */}
+  <Slot
+    slot="repair"
+    id="r-repair"
+    label="Repair"
+    title="So which number is right"
+    lockNote="· unlocks after the reveal"
+    locked
+  >
+    <Sidenote title="Pearl (2014).">
+      <p>
+        The lazy version of this lesson is “so always break the data down.” That is false, and it is
+        the first thing a statistician will test you on. Whether to split or to pool is not a
+        statistical question at all. It is a question about cause.
+      </p>
+      <Fragment slot="note">
+        Pearl showed which number is correct depends on where the third variable sits in the causal
+        story, and that sometimes the answer is in neither table.
+      </Fragment>
+    </Sidenote>
+
+    <div class="control">
+      <button class="btn" id="r-split">So which is it here? →</button>
+      <span class="ctlnote">There is a real answer for baseball, and it is not “always split.”</span>
+    </div>
+
+    <div class="body repaired" id="r-repairbody" hidden>
+      <p>
+        The rule is about cause. If the third variable decided who got which treatment, the split
+        numbers are right. If the treatment caused the third variable, pooling is right. And if
+        something nobody measured is still in play, neither table is right.
+      </p>
+      <p>
+        At-bats are none of those. No hidden bias handed one man his playing time, and batting more
+        did not change how well either man hit. So neither number here is wrong. The per-season
+        answer tells you who was the better hitter in a season; the pooled answer tells you who got
+        more hits per at-bat across the span. They answer two different questions. The table only
+        ever showed you one of them.
+      </p>
+    </div>
+  </Slot>
+
+  {/* ── 7 · DEBRIEF — absence, authority, caveat ── */}
+  <Slot
+    slot="debrief"
+    id="r-debrief"
+    label="Debrief"
+    title="What just happened"
+    lockNote="· unlocks after the repair"
+    locked
+  >
+    <div class="body">
+      <p>
+        You flipped a verdict about two men’s careers without altering one digit of their record.
+        Everyone who has ever quoted the combined number and everyone who has ever quoted the
+        per-season one was reading the same twelve numbers and answering a different question, mostly
+        without noticing there was a choice to make.
+      </p>
+    </div>
+
+    <div class="debrief">
+      <div class="dblock">
+        <div class="dl">What was absent from the table</div>
+        <p class="dt">
+          Every batting average was in front of you. What was never made visible was how unevenly the
+          two men’s at-bats were spread across their good and bad seasons. That single omission is
+          enough to reverse the winner, with nothing hidden and nothing faked. It is the variable
+          nobody split by.
+        </p>
+      </div>
+      <div class="dblock">
+        <div class="dl">Who caught this</div>
+        <p class="dt">
+          <b>Edward Simpson</b> set the paradox out in 1951 (<i>JRSS-B</i> 13(2), 238). <b>Colin
+          Blyth</b> gave it its name in 1972 (<i>JASA</i> 67(338), 364). <b>Judea Pearl</b> settled
+          which number is correct, and when, in 2014 (<i>The American Statistician</i> 68(1), 8).
+          The clinical version the argument leans on is Julious &amp; Mullee (<i>BMJ</i> 309, 1480,
+          1994). The baseball line is from Baseball-Reference; the example is a favourite of Ken
+          Ross’s <i>A Mathematician at the Ballpark</i>.
+        </p>
+      </div>
+      <div class="dblock">
+        <div class="dl">One honest caveat</div>
+        <p class="dt">
+          “Always disaggregate” is wrong: sometimes the correct answer is in neither table. Simpson
+          made the point himself in 1951. He wrote out a table of playing cards, called the combined
+          answer the sensible one, then relabelled the identical numbers as a medical trial and
+          called the split answer sensible instead. Same arithmetic, opposite verdict. The numbers
+          never decide; the story attached to them does. Pearl’s account of exactly when to trust
+          which table is argued rather than closed, which is itself worth knowing.
+        </p>
+      </div>
+    </div>
+  </Slot>
+
+  {/* The exhibit's last affordance: unfreeze and re-weight from scratch. */}
+  <Fragment slot="foot">
+    <button class="btn ghost" id="r-reset">↻ Reset the weighting</button>
+  </Fragment>
+</Shell>
+
+<script>
+  import '../scripts/the-reversal';
+</script>
+
+<style>
+  /* ── Setup table: colour the season each player won (both are Justice) ── */
+  td.r-win { color: var(--accent-ink); font-weight: 500 }
+
+  /* ── the playing-time slider ── */
+  .rslider-wrap { max-width: 900px; margin: 8px 0 0 }
+  .rslider-ends {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    color: var(--faint);
+    letter-spacing: .02em;
+    margin-bottom: 9px;
+  }
+  .rslider-ends b { color: var(--muted); font-weight: 400 }
+  .rslider { position: relative; padding: 6px 0 20px }
+  .rslider input[type='range'] {
+    width: 100%;
+    margin: 0;
+    accent-color: var(--accent);
+    cursor: pointer;
+  }
+  .rslider input[type='range']:disabled { cursor: default; opacity: .6 }
+  /* the "the total flips here" tick, positioned by the controller */
+  .rflip {
+    position: absolute;
+    top: 2px;
+    bottom: 0;
+    width: 0;
+    border-left: 1px dashed var(--thresh);
+    pointer-events: none;
+    transform: translateX(-0.5px);
+  }
+  .rflip-lab {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    color: var(--faint);
+    letter-spacing: .02em;
+  }
+
+  /* ── figure legend swatches ── */
+  .rsw { width: 11px; height: 11px; border-radius: 50%; flex-shrink: 0; opacity: .6 }
+  .rsw-jus { background: #E1583F }
+  .rsw-jet { background: #2E9E96 }
+  .rdiamond {
+    width: 11px;
+    height: 11px;
+    flex-shrink: 0;
+    background: var(--muted);
+    transform: rotate(45deg);
+    border: 1.5px solid var(--panel);
+  }
+  .lgk { color: var(--faint); white-space: nowrap }
+
+  /* ── Commit: the two name buttons; the picked one goes indigo ── */
+  .rnames { gap: 12px }
+  .rname.picked {
+    background: var(--accent);
+    color: var(--surface);
+    border-color: var(--accent);
+  }
+  .rname.picked:hover { background: var(--accent-ink); color: var(--surface) }
+  .rname:disabled { opacity: .4 }
+  .rname.picked:disabled { opacity: 1 }
+
+  /* Reveal counter that names a player gets that player's ink, set inline. */
+  .counters .cv#r-c-total { letter-spacing: -0.01em }
+</style>
