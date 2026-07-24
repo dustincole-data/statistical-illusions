@@ -11,7 +11,8 @@
     "build": "npm run verify && astro build",
     "preview": "astro preview",
     "test": "vitest run",
-    "verify": "tsx scripts/verify.ts"
+    "verify": "tsx scripts/verify.ts",
+    "og": "tsx scripts/og.ts"
   },
   "dependencies": {
     "astro": "^5.18.2"
@@ -19,7 +20,9 @@
   "devDependencies": {
     "@fontsource/archivo": "^5.3.0",
     "@fontsource/fragment-mono": "^5.2.0",
+    "@resvg/resvg-js": "^2.6.2",
     "@types/node": "^26.1.1",
+    "satori": "^0.29.0",
     "tsx": "^4.23.1",
     "vitest": "^3.2.7"
   }

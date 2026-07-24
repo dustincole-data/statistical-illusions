@@ -30,6 +30,9 @@ interface Props {
 const { title, description, illusion } = Astro.props;
 const next = illusion ? nextLiveAfter(illusion.slug) : undefined;
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
+// One build-time PNG per ship-1 route (scripts/og.ts); '/' maps to og/index.png.
+const ogSlug = Astro.url.pathname.replace(/^\/+|\/+$/g, '') || 'index';
+const ogImage = new URL(`${import.meta.env.BASE_URL}og/${ogSlug}.png`, Astro.site).href;
 ---
 
 <!doctype html>
@@ -40,11 +43,14 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <meta property="og:type" content="article" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content={ogImage} />
   </head>
 
   <body>

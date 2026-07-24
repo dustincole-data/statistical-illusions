@@ -1,14 +1,222 @@
 ---
 /**
- * Tier 3 of the authority spine. PHASE 1 renders the heading only; the
- * sources themselves, the searchable terms and the code entry land at phase 4.
+ * Tier 3 of the authority spine. Every primary source behind the anthology,
+ * grouped by illusion, plus the code entry (§2.3) and the literature's
+ * searchable terms the kickers keep out on purpose (§2.7).
+ *
+ * Illusions 02-04 are deferred (§8); their sources are not ship-1 concerns
+ * and are not listed here yet, per the launch-state rule: no promise, no
+ * placeholder, just the plain fact that they land later.
  */
 import Shell from '../layouts/Shell.astro';
+import { bySlug, kickerOf } from '../lib/illusions';
 
-const description = 'Every primary source behind Statistical Illusions, grouped by illusion.';
+const illusion = bySlug('the-forking-paths')!;
+const description = 'Every primary source behind Statistical Illusions, grouped by illusion, plus the code behind the numbers.';
 ---
 
 <Shell title="Sources — Statistical Illusions" description={description}>
   <h1>Sources</h1>
-  <p class="lede">{description}</p>
+  <p class="lede">
+    Every primary source behind this anthology, the code behind its numbers, and the search terms
+    the kickers keep out on purpose.
+  </p>
+
+  {/* ── Illusion 01 ── */}
+  <section class="slot lead">
+    <div class="sh">
+      <span class="kick">{kickerOf(illusion)}</span>
+      <h2 class="st">{illusion.name}</h2>
+    </div>
+
+    <div class="body">
+      <p>
+        The exhibit's own Debrief names who caught this and states one honest caveat. Here is the
+        full record behind both.
+      </p>
+    </div>
+
+    <ol class="srcs">
+      <li>
+        <p class="c">
+          <span class="au">Simmons, J. P., Nelson, L. D., &amp; Simonsohn, U.</span> (2011).
+          <i>False-Positive Psychology: Undisclosed Flexibility in Data Collection and Analysis
+          Allows Presenting Anything as Significant.</i> Psychological Science, 22(11), 1359–1366.
+        </p>
+        <a class="link mono" href="https://doi.org/10.1177/0956797611417632"
+          >doi.org/10.1177/0956797611417632</a
+        >
+      </li>
+      <li>
+        <p class="c">
+          <span class="au">Gelman, A., &amp; Loken, E.</span> (2013). <i>The Garden of Forking
+          Paths: Why Multiple Comparisons Can Be a Problem, Even When There Is No "Fishing
+          Expedition" or "p-Hacking" and the Research Hypothesis Was Posited Ahead of Time.</i>
+          Unpublished manuscript, Department of Statistics, Columbia University. No journal,
+          volume, or DOI: it has never been formally published.
+        </p>
+        <a
+          class="link mono"
+          href="https://sites.stat.columbia.edu/gelman/research/unpublished/p_hacking.pdf"
+          >sites.stat.columbia.edu/gelman/research/unpublished/p_hacking.pdf</a
+        >
+      </li>
+      <li>
+        <p class="c">
+          <span class="au">Gelman, A., &amp; Loken, E.</span> (2014). The Statistical Crisis in
+          Science. <i>American Scientist</i>, 102(6), 460. The peer-reviewed version of the same
+          argument, in plainer language.
+        </p>
+        <a class="link mono" href="https://www.americanscientist.org/article/the-statistical-crisis-in-science"
+          >americanscientist.org/article/the-statistical-crisis-in-science</a
+        >
+      </li>
+      <li>
+        <p class="c">
+          <span class="au">Ioannidis, J. P. A.</span> (2005). Why Most Published Research Findings
+          Are False. <i>PLoS Medicine</i>, 2(8), e124. A modelling result under stated assumptions,
+          not an audit of the literature. Goodman &amp; Greenland's peer-reviewed critique (<i
+            >PLoS Medicine</i
+          >, 2007, 4(4), e168) argues the model cannot prove most published claims are false;
+          Ioannidis replied the same year.
+        </p>
+        <a class="link mono" href="https://doi.org/10.1371/journal.pmed.0020124"
+          >doi.org/10.1371/journal.pmed.0020124</a
+        >
+      </li>
+      <li>
+        <p class="c">
+          <span class="au">Data Colada.</span> The research-credibility blog run by the same three
+          authors, publishing since 2013.
+        </p>
+        <a class="link mono" href="https://datacolada.org">datacolada.org</a>
+      </li>
+    </ol>
+
+    <div class="debrief srcextra">
+      <div class="dblock">
+        <div class="dl">What the literature calls this</div>
+        <p class="dt">
+          The kicker above says manufactured significance, not p-hacking. The term is common, but
+          its own originators are wary of it. Simmons, Nelson and Simonsohn call it researcher
+          degrees of freedom and never write p-hacking themselves. Gelman and Loken, who named the
+          garden of forking paths, later wrote that they regret how fast fishing and p-hacking
+          spread, because both words imply someone did this on purpose. Multiple comparisons is the
+          older, broader statistical term for the same family of problem. The concept belongs to
+          the researchers above; none of them coined the word.
+        </p>
+      </div>
+      <div class="dblock">
+        <div class="dl">The interaction it borrows</div>
+        <p class="dt">
+          The mechanic, choosing an analysis by hand and watching the p-value move, adapts
+          FiveThirtyEight's <a
+            class="link"
+            href="https://projects.fivethirtyeight.com/p-hacking/">Hack Your Way to Scientific
+            Glory</a
+          > (Christie Aschwanden &amp; Ritchie King, 2015). Their working example was partisan; this
+          exhibit keeps the interaction and swaps in Simmons, Nelson and Simonsohn's own study
+          instead.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  {/* ── The hub outro's Wald panel ── */}
+  <section class="slot">
+    <div class="sh">
+      <span class="kick">And one more thing</span>
+      <h2 class="st">The planes that came back</h2>
+    </div>
+
+    <div class="body">
+      <p>The hub's closing panel separates the Wald story from the Wald record. Its sources:</p>
+    </div>
+
+    <ol class="srcs">
+      <li>
+        <p class="c">
+          <span class="au">Wald, A.</span> (1980). <i>A Reprint of "A Method of Estimating Plane
+          Vulnerability Based on Damage of Survivors."</i> CRC 432. Center for Naval Analyses,
+          reprinting the 1943 memoranda. No diagram anywhere in it: it is pure mathematics and
+          numeric tables.
+        </p>
+        <a class="link mono" href="https://www.cna.org/analyses/1980/a-method-of-estimating-plane-vulnerability"
+          >cna.org/analyses/1980/a-method-of-estimating-plane-vulnerability</a
+        >
+      </li>
+      <li>
+        <p class="c">
+          <span class="au">Mangel, M., &amp; Samaniego, F. J.</span> (1984). Abraham Wald's Work on
+          Aircraft Survivability, with comment by J. O. Berger and rejoinder. <i
+            >Journal of the American Statistical Association</i
+          >, 79(386), 259–271. The worked example on the hub reaches us through this rejoinder.
+        </p>
+        <a class="link mono" href="https://doi.org/10.1080/01621459.1984.10478038"
+          >doi.org/10.1080/01621459.1984.10478038</a
+        >
+      </li>
+      <li>
+        <p class="c">
+          <span class="au">Casselman, B.</span> (2016). <i>The Legend of Abraham Wald.</i> AMS
+          Feature Column, June 2016. American Mathematical Society. The source for what does and
+          does not survive in the record, including the "no diagram" finding above.
+        </p>
+        <a class="link mono" href="https://www.ams.org/publicoutreach/feature-column/fc-2016-06"
+          >ams.org/publicoutreach/feature-column/fc-2016-06</a
+        >
+      </li>
+    </ol>
+  </section>
+
+  {/* ── Deferred illusions, stated flatly, no badge ── */}
+  <section class="slot">
+    <div class="sh">
+      <h2 class="st">Illusions 2 to 4</h2>
+    </div>
+    <div class="body">
+      <p>
+        The Reversal, The Positive and The Missing Planes are prose in the essay for now. Their
+        sources land here the day each one ships.
+      </p>
+    </div>
+  </section>
+
+  {/* ── The code entry (§2.3) ── */}
+  <section class="slot">
+    <div class="sh">
+      <h2 class="st">The code behind these numbers</h2>
+    </div>
+    <div class="body">
+      <p>
+        No dataset and no server sit behind any figure on this site, including the ones above.
+        Every number is a few dozen constants and about a hundred and thirty lines of statistics,
+        run in your browser while you read, and all of it is public.
+      </p>
+    </div>
+    <p class="runit">
+      <a class="link" href="https://github.com/dustincole-data/statistical-illusions"
+        >github.com/dustincole-data/statistical-illusions →</a
+      >
+    </p>
+  </section>
 </Shell>
+
+<style>
+  .slot.lead { margin-top: 36px }
+  .runit { margin: 22px 0 0; font-size: var(--t-lede) }
+
+  .srcs { list-style: none; margin: 22px 0 0; padding: 0; display: grid; gap: 18px; max-width: var(--measure) }
+  .srcs li { border-top: 1px solid var(--line); padding-top: 15px }
+  .srcs .c { margin: 0; color: var(--body); font-size: var(--t-small); line-height: 1.65 }
+  .srcs .au { color: var(--ink) }
+  .srcs a.link.mono {
+    display: inline-block;
+    margin-top: 7px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: .01em;
+  }
+
+  .srcextra { margin-top: 30px }
+</style>
