@@ -1,14 +1,431 @@
 ---
 /**
- * The hub essay. PHASE 1 renders the deck only — the essay itself is
- * written in voice at phase 3, the teaser and colophon land with it.
+ * The hub essay — not an index. Five sections: the intro, the first illusion
+ * with its live teaser, the three that are still being built as prose, the
+ * outro's three beats, and the colophon.
+ *
+ * LAUNCH-STATE RULE: illusions 02–04 are paragraphs of the argument. No card,
+ * no thumbnail, no "coming soon" badge, no dead link. The honest line sits in
+ * the intro, once, and is never repeated.
+ *
+ * The teaser is the exhibit's own Figure in garden mode with one control. It
+ * carries no Commit, because committing to a false finding is the exhibit's
+ * job and must not be spent here.
  */
 import Shell from '../layouts/Shell.astro';
+import Figure from '../components/Figure.astro';
+import Sidenote from '../components/Sidenote.astro';
+import { ILLUSIONS, kickerOf } from '../lib/illusions';
 
 const deck = 'Nobody has to lie for a number to mislead you. Here, you do it yourself.';
+const [one, two, three, four] = ILLUSIONS;
 ---
 
 <Shell title="Statistical Illusions" description={deck}>
   <h1>Statistical Illusions</h1>
   <p class="lede">{deck}</p>
+
+  {/* ── ① INTRO ── */}
+  <section class="slot lead">
+    <div class="body">
+      <p>
+        Darrell Huff called his 1954 book <i>How to Lie with Statistics</i>, and seventy years on it
+        is still the one everybody has heard of. The title is the trouble with it. Lying is something
+        a person decides to do, so if that were the problem you could go looking for the person and
+        ask what they stood to gain. Huff called it lying. Usually nobody is, and that is what makes
+        it hard to catch.
+      </p>
+      <p>
+        Most writing on this works the same way. Here is a chart that fooled you, here is the trick,
+        now you know better. It is a comfortable thing to read and I do not think it teaches much,
+        because you cannot really feel a mistake that somebody who already knows the answer is
+        describing to you. So this is built the other way around. Every illusion here is one you
+        manufacture yourself, out of numbers you are shown in full before you touch them. Nothing is
+        held back and nothing gets revealed later that was hidden from you at the start. You will
+        still get there.
+      </p>
+      <p>
+        That works because of the second half of the thesis, which is the half the title misses.
+        Nobody has to lie for a number to mislead you. The defaults do it, and you would have picked
+        the same ones. In the first illusion every option in front of you is a choice somebody has
+        already made and defended in print, and you get the citation at the moment you make it. The
+        claim is not that researchers are crooks. The claim is worse than that, and harder to fix:
+        the careful, defensible, well justified choice is enough on its own.
+      </p>
+      <p class="honest">Four illusions follow. One is playable today; the rest are being built.</p>
+    </div>
+  </section>
+
+  {/* ── ② 1. THE FORKING PATHS — the lead-in, the live teaser, the way in ── */}
+  <section class="slot" id="forking-paths">
+    <div class="sh">
+      <span class="kick">{kickerOf(one!)}</span>
+      <h2 class="st">1. {one!.name}</h2>
+    </div>
+
+    <div class="body">
+      <p>
+        You run a small study. Forty adults, half of them take a twenty minute nap and half sit
+        quietly with a magazine, and afterwards everyone does the same short computer task. There is
+        nothing in it. Both groups came out of the same random number generator and the true
+        difference between them is exactly zero, which you are told before you touch anything.
+      </p>
+    </div>
+
+    <Sidenote title="Simmons, Nelson &amp; Simonsohn (2011)">
+      <p>
+        Then you analyze it. Which of the three things you measured is the outcome? Do you keep the
+        subject who nodded off at the keyboard, or is that an outlier? Everyone, or only the
+        sleep deprived people, where a nap has room to do something? Did you stop at forty, or at
+        thirty, when the pattern already looked clear? None of those questions has a wrong answer,
+        and every answer to them has a defence in the published literature.
+      </p>
+      <Fragment slot="note">
+        catalogued decisions of exactly this kind and measured what a few of them do to a
+        false positive rate. <i>Psychological Science</i> 22(11), Table 1.
+      </Fragment>
+    </Sidenote>
+
+    <div class="body">
+      <p>
+        Below is one such study with every one of those analyses run at once. Each dot is one
+        analysis, placed by its p-value, and the dashed line is the 0.05 convention.
+      </p>
+    </div>
+
+    <Figure
+      id="teaser"
+      viewBox="0 0 880 300"
+      title="The garden of forking paths"
+      question="every analysis of one study with nothing in it"
+      ariaLabel="A horizontal p-value axis carrying every analysis of one study with no effect in it. Some of them fall left of the p = 0.05 threshold and count as significant."
+      caption="Fig. 1 · every testable analysis of one forty-person study whose true effect is exactly zero, computed in your browser as the page loaded. Three outcome measures, seven subgroups, three outlier rules and four stopping points come to 252 combinations; the ones that leave fewer than three subjects in a group cannot be tested and are not drawn. The p-axis is compressed so the 0.05 convention sits where it sits in practice: near the end, and easy to reach."
+    >
+      <Fragment slot="readout">
+        <span><span id="t-sig" class="big hit">—</span> of <span id="t-total">—</span> crossed p&lt;.05</span>
+      </Fragment>
+
+      <Fragment slot="legend">
+        <div class="lg rampwrap">
+          <div class="ramp"></div>
+          <div class="rampscale"><span>p = 1</span><span>0.05</span><span>p → 0</span></div>
+        </div>
+        <div class="lg">
+          <span class="mono lgk">each dot =</span> one analysis of the same forty subjects
+        </div>
+      </Fragment>
+
+      <Fragment slot="controls">
+        <div class="control">
+          <button class="btn ghost" id="t-again">Keep looking →</button>
+          <span class="ctlnote">A new sample every press, and whatever it gives. None of them are chosen.</span>
+        </div>
+      </Fragment>
+    </Figure>
+
+    <div class="body">
+      <p>
+        Nobody runs all of them, and that is the part worth sitting with. One analysis is enough,
+        picked honestly, after the data came in, by a person who would have picked differently if
+        the data had come in differently. None of that shows up in the paper. There is no line in
+        the method section for the analyses you never had a reason to run.
+      </p>
+    </div>
+
+    <p class="runit"><a class="link" href={`/${one!.slug}`}>Run it yourself →</a></p>
+  </section>
+
+  {/* ── ③ 2–4 · prose paragraphs of the argument. No cards, no stills. ── */}
+  <section class="slot">
+    <div class="sh">
+      <span class="kick">{kickerOf(two!)}</span>
+      <h2 class="st">2. {two!.name}</h2>
+    </div>
+    <div class="body">
+      <p>
+        Two hitters. One of them had the better batting average in 1995. He had it again in 1996,
+        and again in 1997. Then you add the three seasons together and he loses. Nothing was
+        falsified and no season was cherry-picked; the totals are weighted by how many times each
+        man came to the plate, and that number was never put in front of you. You will re-weight it
+        yourself, name a winner, and watch the winner change. What was absent from the table: the
+        variable nobody split by.
+      </p>
+    </div>
+  </section>
+
+  <section class="slot">
+    <div class="sh">
+      <span class="kick">{kickerOf(three!)}</span>
+      <h2 class="st">3. {three!.name}</h2>
+    </div>
+    <div class="body">
+      <p>
+        You are going to design a screening programme. You choose how common the disease is, how
+        often the test catches it, and how often it cries wolf, and every number you pick will look
+        reasonable. Then one person tests positive and you commit to a guess: what are the odds they
+        are sick? Most people guess high. So do most doctors. Then you count the thousand people
+        your programme actually touched, one at a time, and go looking for that person in a crowd of
+        false alarms. What was absent from the table: the population nobody counted.
+      </p>
+    </div>
+  </section>
+
+  <section class="slot">
+    <div class="sh">
+      <span class="kick">{kickerOf(four!)}</span>
+      <h2 class="st">4. {four!.name}</h2>
+    </div>
+    <div class="body">
+      <p>
+        Bombers come back from Europe with holes in them, and you have armor enough for one part of
+        the plane. The wings are riddled. The fuselage is riddled. The engines are almost clean. You
+        put the armor where the damage is, because that is where the damage is, and then you fly the
+        fleet and watch what happens to it. The answer has been told for eighty years as a story
+        about a clever statistician, and most of the details in that telling are not in the record,
+        which is the same lesson twice. What was absent from the table: the planes that never came
+        home.
+      </p>
+    </div>
+  </section>
+
+  {/* ── ④ OUTRO · beat 1, then the marked coda ── */}
+  <section class="slot">
+    <div class="sh">
+      <h2 class="st">What was absent</h2>
+    </div>
+    <div class="body">
+      <p>
+        Four illusions, four subjects with nothing in common, one mechanism. Every one of them is
+        caused by something that was not on the table. The paths you did not take. The variable you
+        did not split by. The population you did not count. The planes that did not come home.
+      </p>
+      <p>
+        You can audit a number that is in front of you. Check its arithmetic, chase its source, ask
+        who paid for it, ask what it would have been under a different definition. There is no
+        equivalent move for a number that is not there, because there is nothing to point at and
+        nobody to ask. Absence does not look like anything. That is the whole reason nobody has to
+        lie.
+      </p>
+    </div>
+
+    {/* Beat 2. Marked, and marked visibly: this is the one place in the piece
+        that reasons past its evidence, and it must not be readable as a finding. */}
+    <div class="dare coda">
+      <div class="l">An analogy, and not a finding</div>
+      <p>
+        Manufacturing that first result takes about ninety seconds, and every choice along the way
+        has a published defence sitting next to it. The number at the end is not the point. The
+        point is how little friction there was between an honest question and a wrong answer.
+      </p>
+      <p>
+        Handing the question to a language model costs about the same. You type it, a paragraph
+        comes back, and the paragraph is fluent and specific and has no visible seams in it.
+        Whatever was considered and not considered on the way to it is absent from the table in the
+        same way the other two hundred and fifty analyses were, except that this time there is no
+        way to draw the rest of the garden.
+      </p>
+      <p>
+        I want to be plain about what that is. It is an analogy. Nothing on this site measures a
+        language model, tests one, or shows anything at all about how often they are wrong. All it
+        can do is hand you the feeling once, in a case small enough that the whole garden fits on
+        one axis. Where else you have felt it is your call, not mine.
+      </p>
+    </div>
+  </section>
+
+  {/* ── ④ OUTRO · beat 3, the finale. It lives here, not inside Illusion 04. ── */}
+  <section class="slot">
+    <div class="sh">
+      <span class="kick">And one more thing</span>
+      <h2 class="st">The planes that came back</h2>
+    </div>
+    <div class="body">
+      <p>
+        You may already know the fourth illusion in its famous form. Bombers return from raids with
+        their wings and fuselage full of holes. Someone proposes armoring the parts with the most
+        holes. A statistician named Abraham Wald says no, armor the engines, because the planes that
+        were hit in the engines are not in the room to be counted.
+      </p>
+      <p>The mechanism in that story is real, and it is Wald’s. Most of the rest of the telling is not.</p>
+    </div>
+
+    <div class="myth">
+      <div class="mh" aria-hidden="true"><span>The story</span><span>The record</span></div>
+
+      <div class="mr">
+        <p class="ms"><span class="rl">The story</span>The diagram of a bomber with the bullet holes clustered on the wings.</p>
+        <p class="mrec">
+          <span class="rl">The record</span>Drawn in 2016 by a Wikipedia editor and redrawn in 2021.
+          The aircraft in it is a Lockheed PV-1 Ventura, which appears in none of Wald’s examples.
+          His memoranda carry no such diagram; they are pure mathematics and numeric tables.
+        </p>
+      </div>
+
+      <div class="mr">
+        <p class="ms"><span class="rl">The story</span>“Not so fast,” Wald told the officers.</p>
+        <p class="mrec">
+          <span class="rl">The record</span>There is no record of the meeting, the officers, or the
+          line. Casselman, who went looking: “There is extremely little source material for what
+          Wald had to say about aircraft damage.” What survives is the memoranda themselves and two
+          vague mentions in W. Allen Wallis’s memoir of the Statistical Research Group, neither of
+          which names Wald.
+        </p>
+      </div>
+
+      <div class="mr">
+        <p class="ms"><span class="rl">The story</span>So he told them to armor the engines.</p>
+        <p class="mrec">
+          <span class="rl">The record</span>Wald mentions armor once, in general terms, as something
+          his estimates “can be used as guides for locating.” The engine result comes out of a
+          worked example he labels in the same sentence as hypothetical data. He makes no
+          recommendation to any commander. The opposite correction, that he never mentioned armor
+          at all, is wrong too.
+        </p>
+      </div>
+
+      <div class="mr">
+        <p class="ms"><span class="rl">The story</span>And it saved the bombers.</p>
+        <p class="mrec">
+          <span class="rl">The record</span>Mangel and Samaniego, in a peer-reviewed rejoinder: “We
+          do not know whether it was used during World War II.” The documented uses come later, in
+          Vietnam and on the B-52.
+        </p>
+      </div>
+    </div>
+
+    <p class="mysrc">
+      Wald, <i>A Method of Estimating Plane Vulnerability Based on Damage of Survivors</i> (CRC 432,
+      1980, reprinting the 1943 memoranda) · Mangel &amp; Samaniego, <i>JASA</i> 79(386), 1984 ·
+      Casselman, <i>The Legend of Abraham Wald</i>, AMS Feature Column, 2016.
+    </p>
+
+    <div class="body">
+      <p>
+        None of this makes Wald smaller. In 1943, working only from the aircraft that came back, he
+        built a way to estimate damage he could not observe, and he was careful to say that the
+        method rests on an assumption survivor data cannot check. The caution is the part that did
+        not survive. What got repeated is the version with a good line in it.
+      </p>
+    </div>
+
+    <p class="last">The story about the planes that didn’t come back is itself a story that came back.</p>
+  </section>
+
+  {/* ── ⑤ COLOPHON — a quiet block at the foot, not a page ── */}
+  <Fragment slot="sitefoot">
+    <div class="colophon">
+      <div class="cl">How this was made</div>
+      <p>
+        No dataset, no server, nothing fetched. A few dozen inline constants and about a hundred and
+        thirty lines of statistics. Every number on this site was computed in your browser while you
+        read it, and all of it is viewable in source at
+        <a class="link" href="https://github.com/dustincole-data/statistical-illusions"
+          >github.com/dustincole-data/statistical-illusions</a
+        >.
+      </p>
+      <p class="by">Dustin Cole · <a class="link" href="https://dustincoledata.com">dustincoledata.com</a></p>
+    </div>
+  </Fragment>
 </Shell>
+
+<script>
+  import '../scripts/teaser';
+</script>
+
+<style>
+  /* The intro carries no header rail, so it needs the gap the rail would
+     otherwise give it. `.slot:first-of-type` zeroes the top margin. */
+  .slot.lead { margin-top: 36px }
+  .honest { color: var(--ink); font-weight: 500 }
+
+  .lgk { color: var(--faint); white-space: nowrap }
+
+  .runit { margin: 26px 0 0; font-size: var(--t-lede) }
+
+  /* The coda's marking. `.dare` already sets a labelled, left-ruled block off
+     from the prose; the coda only widens the label, because "this is an
+     analogy" has to be legible as a label rather than read as a heading. */
+  .coda { margin-top: 30px }
+  .coda .l { letter-spacing: .13em }
+
+  /* ── the Wald panel: what the story says, next to what the record says ── */
+  .myth { margin: 30px 0 0; max-width: 900px; border-top: 2px solid var(--ink) }
+  .myth .mh,
+  .myth .mr { display: grid; grid-template-columns: 1fr 1.4fr; gap: 30px }
+  .myth .mh {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: .13em;
+    text-transform: uppercase;
+    color: var(--faint);
+    padding: 10px 0 9px;
+    border-bottom: 1px solid var(--line);
+  }
+  .myth .mr { padding: 17px 0; border-bottom: 1px solid var(--line) }
+  .myth .mr:last-child { border-bottom: none }
+  .myth p { margin: 0; max-width: none; font-size: var(--t-small); line-height: 1.62 }
+  .myth .ms { color: var(--muted) }
+  .myth .mrec { color: var(--ink) }
+  /* The per-cell label. Hidden where the column header does the job, but never
+     removed: it is what a screen reader reads at every width. */
+  .myth .rl {
+    position: absolute;
+    width: 1px; height: 1px;
+    padding: 0; margin: -1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+  .mysrc {
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    color: var(--faint);
+    line-height: 1.55;
+    margin: 14px 0 28px;
+    max-width: 76ch;
+  }
+
+  /* The last line of the piece. */
+  .last {
+    margin: 40px 0 0;
+    padding-top: 26px;
+    border-top: 2px solid var(--ink);
+    font-size: var(--t-reveal);
+    line-height: 1.26;
+    letter-spacing: -0.018em;
+    font-weight: 600;
+    color: var(--ink);
+    max-width: 30ch;
+    text-wrap: balance;
+  }
+
+  @media (max-width: 760px) {
+    .myth .mh { display: none }
+    .myth .mr { grid-template-columns: 1fr; gap: 10px }
+    .myth .rl {
+      position: static;
+      width: auto; height: auto;
+      margin: 0 0 5px;
+      clip: auto;
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      letter-spacing: .13em;
+      text-transform: uppercase;
+      color: var(--faint);
+    }
+  }
+
+  /* ── the colophon: stated once, factually, no adjectives ── */
+  .colophon { border-top: 1px solid var(--line); padding-top: 20px; max-width: var(--measure) }
+  .colophon .cl {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: .13em;
+    text-transform: uppercase;
+    color: var(--faint);
+    margin-bottom: 10px;
+  }
+  .colophon p { margin: 0; font-size: var(--t-small); color: var(--muted); line-height: 1.65 }
+  .colophon .by { margin-top: 16px; font-family: var(--font-mono); font-size: 12px; color: var(--faint) }
+</style>
