@@ -176,7 +176,7 @@ function drawYou() {
   );
   const label = node('text', { x: lx, y: ay, class: 'annot', 'text-anchor': anchor, fill: INDIGO_INK });
   label.textContent =
-    (published && published.p === cur.p ? 'published — ' : 'your analysis — ') +
+    (published && published.p === cur.p ? 'published · ' : 'your analysis · ') +
     'p = ' +
     cur.p.toFixed(3);
   g.appendChild(label);
@@ -336,7 +336,7 @@ function update() {
   // these two nodes legitimately stop existing.
   const roP = maybe('#ro-p');
   if (roP) {
-    roP.textContent = cur ? cur.p.toFixed(3) : '—';
+    roP.textContent = cur ? cur.p.toFixed(3) : '–';
     roP.classList.toggle('hit', !!cur && cur.p < THRESHOLD);
   }
   const roTried = maybe('#ro-tried');
@@ -350,7 +350,7 @@ function update() {
   setLocked(
     '#s-commit',
     !hit,
-    hit ? '— you have a result' : '— unlocks when an analysis crosses p < 0.05',
+    hit ? '· you have a result' : '· unlocks when an analysis crosses p < 0.05',
   );
 
   // The uncooperative sample (~8% of seeds). The escape hatch is not a patch:
@@ -360,7 +360,7 @@ function update() {
   el<HTMLButtonElement>('#more').hidden = !stuck || N >= 70;
   el('#opnote').textContent = stuck
     ? N < 70
-      ? 'No path in this sample crosses 0.05 — this happens to about 8% of samples. Collect a few more subjects; that is itself one of the knobs.'
+      ? 'No path in this sample crosses 0.05. This happens to about 8% of samples. Collect a few more subjects; that is itself one of the knobs.'
       : 'This sample will not cooperate at any size you would plausibly run. That is the honest 2%, and it is worth seeing.'
     : 'Nothing here is irreversible. Yet.';
 }
@@ -416,7 +416,7 @@ el('#publish').onclick = () => {
   el<HTMLButtonElement>('#more').hidden = true;
   el('#opnote').textContent =
     'Frozen. This is the analysis you published; the others are still down there.';
-  unlock('#s-commit', '— done');
+  unlock('#s-commit', '· done');
 
   openReveal();
   el('#s-reveal').scrollIntoView({ behavior: reduced() ? 'auto' : 'smooth', block: 'start' });
@@ -449,7 +449,7 @@ function openReveal() {
   // Scoped to this figure's frame: Figure.astro owns these rails, and there is
   // exactly one chart on the site precisely so the Reveal can rewrite them.
   figFrame.querySelector('.figtitle')!.innerHTML =
-    'The garden of forking paths<span class="q"> — every analysis of these same forty subjects</span>';
+    'The garden of forking paths<span class="q"> – every analysis of these same forty subjects</span>';
   figFrame.querySelector('.readout')!.innerHTML =
     `<span><span class="big hit">${sig}</span> of ${paths.length} paths crossed p&lt;.05</span>`;
 
@@ -460,7 +460,7 @@ function openReveal() {
   const caption = svg.closest('figure')!.querySelector('figcaption');
   if (caption)
     caption.textContent =
-      'Fig. 1 — every testable analysis of the same forty subjects, on the same axis, ' +
+      'Fig. 1 · every testable analysis of the same forty subjects, on the same axis, ' +
       'the same scale and the same threshold. The significant paths pile into a narrow ' +
       'column just past the line rather than spreading out beyond it. That shape is the ' +
       'p-curve, and nothing here draws it deliberately: a result hunted until it crossed ' +
@@ -472,7 +472,7 @@ function openReveal() {
   el('#revealbody').textContent =
     `The figure has not changed its axis, its scale, or its data. Every other analysis you ` +
     `could have run on these same forty subjects has been drawn in alongside yours. ` +
-    `${sig} of the ${paths.length} cross the line. You found one of them in ${tried.size} tries.`;
+    `${sig} of the ${paths.length} cross the line. You found one of them in ${tried.size} ${tried.size === 1 ? 'try' : 'tries'}.`;
 }
 
 /** 600 fresh studies, chunked across frames so the counters climb visibly. */

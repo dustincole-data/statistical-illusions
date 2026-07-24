@@ -276,12 +276,12 @@ export const JUSTIFICATIONS: Record<string, Justification> = {
   },
   'sub:0': {
     reason: 'No subsetting. The pre-specified comparison, on everyone who took part.',
-    cost: 'This is the only one of the seven that requires no justification at all — which is precisely why it is rarely the one reported.',
+    cost: 'This is the only one of the seven that requires no justification at all, which is precisely why it is rarely the one reported.',
   },
   'sub:1': {
     reason:
       'Sleep research reports sex differences in homeostatic sleep pressure and in recovery from restriction, so analysing women separately is routine.',
-    cost: 'Simmons et al. Table 1: <b>controlling for gender, or for gender × treatment, raises the false-positive rate to 11.7%</b> — the single largest of their four measured degrees of freedom.',
+    cost: 'Simmons et al. Table 1: <b>controlling for gender, or for gender × treatment, raises the false-positive rate to 11.7%</b>. The single largest of their four measured degrees of freedom.',
   },
   'sub:2': {
     reason:
@@ -311,7 +311,7 @@ export const JUSTIFICATIONS: Record<string, Justification> = {
   },
   'out:keep': {
     reason: 'No exclusions. Every observation collected is analysed.',
-    cost: 'The honest default — and the one that most often fails to produce a result.',
+    cost: 'The honest default, and the one that most often fails to produce a result.',
   },
   'out:sd2': {
     reason:

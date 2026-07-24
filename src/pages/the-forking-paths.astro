@@ -20,7 +20,7 @@ const illusion = bySlug('the-forking-paths')!;
 ---
 
 <Shell
-  title={`${illusion.name} — Statistical Illusions`}
+  title={`${illusion.name} · Statistical Illusions`}
   description={illusion.lede!}
   illusion={illusion}
 >
@@ -28,7 +28,7 @@ const illusion = bySlug('the-forking-paths')!;
   <Slot slot="frame" label={kickerOf(illusion)} heading={illusion.name} lede={illusion.lede}>
     <Sidenote title="Why p < 0.05?">
       <p>
-        Below is a study with nothing in it. Not a weak effect, not a small one — nothing. Forty
+        Below is a study with nothing in it. Not a weak effect, not a small one. Nothing. Forty
         subjects were drawn from a random number generator in your browser a moment ago, and the
         difference between the two groups was set to exactly zero.
       </p>
@@ -39,7 +39,7 @@ const illusion = bySlug('the-forking-paths')!;
         you.</b>
       </p>
       <Fragment slot="note">
-        A convention, not a law — the odds a pure-chance result slips through a single test. Run
+        A convention, not a law: the odds a pure-chance result slips through a single test. Run
         twenty honest tests on nothing and, on average, one clears the bar anyway.
       </Fragment>
     </Sidenote>
@@ -101,7 +101,7 @@ const illusion = bySlug('the-forking-paths')!;
   <Slot slot="operate" id="s-operate" label="Operate" title="Your analysis">
     <Sidenote title="Simmons, Nelson & Simonsohn (2011)">
       <p>
-        Four decisions. None of them is cheating, and none of them is even unusual — each one has
+        Four decisions. None of them is cheating, and none of them is even unusual. Each one has
         been made, and justified, in the published literature. Turn them until the number at the
         bottom right of the panel drops below 0.05.
       </p>
@@ -116,7 +116,7 @@ const illusion = bySlug('the-forking-paths')!;
     <div class="justify" aria-live="polite">
       <div class="jl">Why this choice is defensible</div>
       <p class="jt" id="jt">
-        Hover or select any option above. Every one carries a real, published justification — that
+        Hover or select any option above. Every one carries a real, published justification. That
         is what makes this an accident rather than a fraud.
       </p>
       <div class="jc" id="jc"></div>
@@ -128,10 +128,10 @@ const illusion = bySlug('the-forking-paths')!;
       title="Your path through the garden"
       question="one analysis at a time"
       ariaLabel="A horizontal p-value axis. Your current analysis is marked in indigo; paths you have already tried are shown as hollow rings."
-      caption="Fig. 1 — Welch two-sample t-tests computed live on the forty subjects above. The horizontal axis is the p-value, compressed so the 0.05 convention sits where it does in practice: near the end, and easy to reach."
+      caption="Fig. 1 · Welch two-sample t-tests computed live on the forty subjects above. The horizontal axis is the p-value, compressed so the 0.05 convention sits where it does in practice: near the end, and easy to reach."
     >
       <Fragment slot="readout">
-        <span>p&nbsp;=&nbsp;<span id="ro-p" class="big">—</span></span>
+        <span>p&nbsp;=&nbsp;<span id="ro-p" class="big">–</span></span>
         <span class="mono tried"><span id="ro-tried">0</span> paths tried</span>
       </Fragment>
 
@@ -160,13 +160,13 @@ const illusion = bySlug('the-forking-paths')!;
     id="s-commit"
     label="Commit"
     title="Publish it"
-    lockNote="— unlocks when an analysis crosses p < 0.05"
+    lockNote="· unlocks when an analysis crosses p < 0.05"
     locked
   >
     <div class="body">
       <p>
         This is the step that separates an exploration from a finding. Once you publish, the other
-        paths stop existing — not because anyone destroyed them, but because nobody ever hears about
+        paths stop existing. Not because anyone destroyed them, but because nobody ever hears about
         them.
       </p>
     </div>
@@ -178,7 +178,7 @@ const illusion = bySlug('the-forking-paths')!;
 
     <div class="pubcard" id="pubcard" aria-live="polite">
       <span class="stamp">Published</span>
-      <p class="finding" id="finding">—</p>
+      <p class="finding" id="finding">–</p>
       <div class="meta" id="pubmeta"></div>
     </div>
   </Slot>
@@ -189,7 +189,7 @@ const illusion = bySlug('the-forking-paths')!;
     id="s-reveal"
     label="Reveal"
     title="The paths you didn’t take"
-    lockNote="— unlocks when you publish"
+    lockNote="· unlocks when you publish"
     locked
   >
     <div class="revealline">
@@ -208,27 +208,27 @@ const illusion = bySlug('the-forking-paths')!;
       </Fragment>
     </Sidenote>
 
-    <div class="counters">
+    <div class="counters" aria-live="polite">
       <div class="ctr">
         <div class="cl">Paths in your garden</div>
-        <div class="cv" id="c-paths">—</div>
+        <div class="cv" id="c-paths">–</div>
         <div class="cn" id="c-pathsnote">
           3 measures × 7 subgroups × 3 outlier rules × 4 stopping points
         </div>
       </div>
       <div class="ctr">
         <div class="cl">Of those, “significant”</div>
-        <div class="cv sig" id="c-sig">—</div>
+        <div class="cv sig" id="c-sig">–</div>
         <div class="cn" id="c-signote">on data with no effect in it</div>
       </div>
       <div class="ctr pending" id="ctr-many">
         <div class="cl">Studies like yours containing at least one significant path</div>
-        <div class="cv sig" id="c-many">—</div>
+        <div class="cv sig" id="c-many">–</div>
         <div class="cn" id="c-manynote">not yet run</div>
       </div>
       <div class="ctr pending" id="ctr-repro">
-        <div class="cl">One measure only — reproducing the 2011 paper</div>
-        <div class="cv sig" id="c-repro">—</div>
+        <div class="cl">One measure only, reproducing the 2011 paper</div>
+        <div class="cv sig" id="c-repro">–</div>
         <div class="cn" id="c-repronote">published figure: 60.7%</div>
       </div>
     </div>
@@ -247,14 +247,14 @@ const illusion = bySlug('the-forking-paths')!;
     id="s-repair"
     label="Repair"
     title="The same move, made honestly"
-    lockNote="— unlocks after the reveal"
+    lockNote="· unlocks after the reveal"
     locked
   >
     <Sidenote title="The authors’ own answer.">
       <p>
         Nothing about the four knobs was wrong. What was wrong was choosing among them after seeing
         the data. So make one change and nothing else: write down which measure, which subgroup,
-        which outlier rule and which stopping point you will use <b>before</b> the data exists — then
+        which outlier rule and which stopping point you will use <b>before</b> the data exists, then
         run the same six hundred studies and look only at that path.
       </p>
       <Fragment slot="note">
@@ -268,15 +268,15 @@ const illusion = bySlug('the-forking-paths')!;
       <span class="ctlnote">Same generator. Same seeds. Same test. One path each.</span>
     </div>
 
-    <div class="counters">
+    <div class="counters" aria-live="polite">
       <div class="ctr" id="ctr-hack">
         <div class="cl">Free to choose after the fact</div>
-        <div class="cv sig" id="c-hack">—</div>
+        <div class="cv sig" id="c-hack">–</div>
         <div class="cn">of 600 studies produced a “significant” finding</div>
       </div>
       <div class="ctr pending" id="ctr-pre">
         <div class="cl">One path, fixed in advance</div>
-        <div class="cv null" id="c-pre">—</div>
+        <div class="cv null" id="c-pre">–</div>
         <div class="cn" id="c-prenote">nominal false-positive rate: 5%</div>
       </div>
     </div>
@@ -296,15 +296,15 @@ const illusion = bySlug('the-forking-paths')!;
     id="s-debrief"
     label="Debrief"
     title="What just happened"
-    lockNote="— unlocks after the repair"
+    lockNote="· unlocks after the repair"
     locked
   >
     <div class="body">
       <p>
         You did deliberately, in about ninety seconds, a thing that usually happens slowly and
         without anyone noticing. That distinction matters more than it looks. The researchers who
-        described this were careful to separate <b>fishing</b> — running many analyses and reporting
-        the best — from the far more common case: running <b>one</b> analysis, chosen honestly, in a
+        described this were careful to separate <b>fishing</b> (running many analyses and reporting
+        the best) from the far more common case: running <b>one</b> analysis, chosen honestly, in a
         world where different data would have led the same honest person to a different choice. The
         second one leaves no trace in the paper, in the lab notebook, or in the memory of the person
         who did it.
@@ -315,14 +315,14 @@ const illusion = bySlug('the-forking-paths')!;
       <div class="dblock">
         <div class="dl">What was absent from the table</div>
         <p class="dt">
-          The paths you didn’t take. Nothing was hidden and nothing was falsified — the other 250
+          The paths you didn’t take. Nothing was hidden and nothing was falsified. The other 250
           analyses simply never had to be mentioned, because they were never run.
         </p>
       </div>
       <div class="dblock">
         <div class="dl">Who caught this</div>
         <p class="dt">
-          <b>Joseph Simmons, Leif Nelson &amp; Uri Simonsohn</b> — “False-Positive Psychology,”
+          <b>Joseph Simmons, Leif Nelson &amp; Uri Simonsohn</b>: “False-Positive Psychology,”
           <i>Psychological Science</i> 22(11), 2011, and their continuing work at
           <a class="link" href="https://datacolada.org">Data Colada</a>, their
           research-credibility blog. <b>Andrew Gelman &amp; Eric Loken</b> named the garden of
@@ -333,7 +333,7 @@ const illusion = bySlug('the-forking-paths')!;
       <div class="dblock">
         <div class="dl">One honest caveat</div>
         <p class="dt">
-          The 2011 paper’s most-quoted rule — require at least twenty observations per cell — was
+          The 2011 paper’s most-quoted rule (require at least twenty observations per cell) was
           withdrawn by its own authors in 2018, because it “led people to focus on the wrong aspect
           of disclosure.” Their current answer is preregistration, which is what the repair above
           actually does. And Ioannidis’s title is a modelling result under stated assumptions, not
