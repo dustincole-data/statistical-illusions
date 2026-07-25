@@ -4,9 +4,9 @@
  * grouped by illusion, plus the code entry (§2.3) and the literature's
  * searchable terms the kickers keep out on purpose (§2.7).
  *
- * Illusions 02-04 are deferred (§8); their sources are not ship-1 concerns
- * and are not listed here yet, per the launch-state rule: no promise, no
- * placeholder, just the plain fact that they land later.
+ * All four illusions have graduated; each carries its own spine here, in the
+ * author's route order, and the Illusion 04 section also serves the hub essay's
+ * closing panel.
  */
 import Shell from '../layouts/Shell.astro';
 import { bySlug, kickerOf } from '../lib/illusions';
@@ -14,6 +14,7 @@ import { bySlug, kickerOf } from '../lib/illusions';
 const illusion = bySlug('the-forking-paths')!;
 const reversal = bySlug('the-reversal')!;
 const positive = bySlug('the-positive')!;
+const planes = bySlug('the-missing-planes')!;
 const description = 'Every primary source behind Statistical Illusions, grouped by illusion, plus the code behind the numbers.';
 ---
 
@@ -325,15 +326,18 @@ const description = 'Every primary source behind Statistical Illusions, grouped 
     </div>
   </section>
 
-  {/* ── The hub outro's Wald panel ── */}
+  {/* ── Illusion 04 (also the hub outro's Wald panel) ── */}
   <section class="slot">
     <div class="sh">
-      <span class="kick">And one more thing</span>
-      <h2 class="st">The planes that came back</h2>
+      <span class="kick">{kickerOf(planes)}</span>
+      <h2 class="st">{planes.name}</h2>
     </div>
 
     <div class="body">
-      <p>The hub's closing panel separates the Wald story from the Wald record. Its sources:</p>
+      <p>
+        The exhibit's Debrief names who caught this and states one honest caveat; the essay's closing
+        panel separates the famous story from the record. Here is the full record behind both.
+      </p>
     </div>
 
     <ol class="srcs">
@@ -341,8 +345,9 @@ const description = 'Every primary source behind Statistical Illusions, grouped 
         <p class="c">
           <span class="au">Wald, A.</span> (1980). <i>A Reprint of "A Method of Estimating Plane
           Vulnerability Based on Damage of Survivors."</i> CRC 432. Center for Naval Analyses,
-          reprinting the 1943 memoranda. No diagram anywhere in it: it is pure mathematics and
-          numeric tables.
+          reprinting the 1943 memoranda. Pure mathematics and numeric tables; no damage diagram
+          anywhere in it. The short title is the one on the reprint; the circulating "of Enemy Fire"
+          is not.
         </p>
         <a class="link mono" href="https://www.cna.org/analyses/1980/a-method-of-estimating-plane-vulnerability"
           >cna.org/analyses/1980/a-method-of-estimating-plane-vulnerability</a
@@ -350,10 +355,22 @@ const description = 'Every primary source behind Statistical Illusions, grouped 
       </li>
       <li>
         <p class="c">
+          <span class="au">Wallis, W. A.</span> (1980). <i>The Statistical Research Group, 1942–1945.</i>
+          Journal of the American Statistical Association, 75(370), 320–330. The insider account of the
+          group Wald worked in; its two vague mentions of the armor problem do not name him.
+        </p>
+        <a class="link mono" href="https://doi.org/10.1080/01621459.1980.10477469"
+          >doi.org/10.1080/01621459.1980.10477469</a
+        >
+      </li>
+      <li>
+        <p class="c">
           <span class="au">Mangel, M., &amp; Samaniego, F. J.</span> (1984). Abraham Wald's Work on
           Aircraft Survivability, with comment by J. O. Berger and rejoinder. <i
             >Journal of the American Statistical Association</i
-          >, 79(386), 259–271. The worked example on the hub reaches us through this rejoinder.
+          >, 79(386), 259–271. The worked example in the exhibit reaches us through this rejoinder,
+          which carries Berger's caveat and the "we do not know whether it was used during World War
+          II" line.
         </p>
         <a class="link mono" href="https://doi.org/10.1080/01621459.1984.10478038"
           >doi.org/10.1080/01621459.1984.10478038</a
@@ -362,25 +379,37 @@ const description = 'Every primary source behind Statistical Illusions, grouped 
       <li>
         <p class="c">
           <span class="au">Casselman, B.</span> (2016). <i>The Legend of Abraham Wald.</i> AMS
-          Feature Column, June 2016. American Mathematical Society. The source for what does and
-          does not survive in the record, including the "no diagram" finding above.
+          Feature Column, June 2016. American Mathematical Society. The source for what does and does
+          not survive in the record, including the "no diagram" finding above.
         </p>
         <a class="link mono" href="https://www.ams.org/publicoutreach/feature-column/fc-2016-06"
           >ams.org/publicoutreach/feature-column/fc-2016-06</a
         >
       </li>
     </ol>
-  </section>
 
-  {/* ── Deferred illusions, stated flatly, no badge ── */}
-  <section class="slot">
-    <div class="sh">
-      <h2 class="st">Illusion 4</h2>
-    </div>
-    <div class="body">
-      <p>
-        The Missing Planes is prose in the essay for now. Its sources land here the day it ships.
-      </p>
+    <div class="debrief srcextra">
+      <div class="dblock">
+        <div class="dl">Why the map is drawn, not found</div>
+        <p class="dt">
+          No damage diagram was ever published, so the bullet map in the exhibit is a browser
+          simulation from a visible seed, and it says so. The often-reproduced bullet-riddled bomber
+          is a 2016 Wikipedia illustration of a Lockheed PV-1 Ventura, an aircraft in none of Wald's
+          examples; the exhibit draws its own generic plane, which avoids both the mislabelling and a
+          share-alike licence.
+        </p>
+      </div>
+      <div class="dblock">
+        <div class="dl">Getting both directions right</div>
+        <p class="dt">
+          The story overstates Wald and the usual correction understates him. He mentions armor once,
+          in general terms, calling his estimates something that "can be used as guides for locating
+          protective armor," with the engine result coming from a hypothetical worked example. The
+          honest caveat is Berger's, which Wald accepted: the method assumes a constant per-hit
+          survival probability that survivor-only data cannot test. Documented use came later, in
+          Vietnam and on the B-52, not the Second World War.
+        </p>
+      </div>
     </div>
   </section>
 

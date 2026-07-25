@@ -60,6 +60,13 @@ import {
   ppv as pPPV,
   prevalenceForPPV as pCross,
 } from '../src/scripts/the-positive.model';
+import {
+  NO_ARMOR as MP_NO_ARMOR,
+  WALD as MP_WALD,
+  type ZoneKey as MpZoneKey,
+  armorOf as mpArmorOf,
+  simulateFleet as mpFleet,
+} from '../src/scripts/the-missing-planes.model';
 
 const TRIALS_GARDEN = 4_000;
 const TRIALS_SINGLE = 20_000;
@@ -296,6 +303,69 @@ console.log(
 );
 console.log(`    ${posFail.length ? posFail.length + ' problem(s)' : 'ok'}\n`);
 failures.push(...posFail);
+
+// ── Illusion 04 · The Missing Planes — seeded, reproducing §8.5 ──────────────
+//
+// A live simulation, like the hero: the fleet is generated, so the gate pins
+// exact counts against the same generator the browser runs. Seed 7 reproduces
+// the published §8.5 damage table byte-for-byte — it IS that table's source, the
+// verified probe in 03-feasibility.mjs. A wrong draw order or an off-by-one in
+// the zone walk moves a count the piece prints and fails the build, the way a
+// bad degrees-of-freedom does upstream.
+
+const planeFail: string[] = [];
+const MP_KEYS: MpZoneKey[] = ['fuselage', 'wings', 'tail', 'engine'];
+
+const f7 = mpFleet(7, MP_NO_ARMOR);
+const WANT_ALL: Record<MpZoneKey, number> = { fuselage: 370, wings: 368, tail: 142, engine: 96 };
+const WANT_HOME: Record<MpZoneKey, number> = { fuselage: 228, wings: 239, tail: 63, engine: 10 };
+for (const k of MP_KEYS) {
+  if (f7.hitsAll[k] !== WANT_ALL[k])
+    planeFail.push(`seed 7 hitsAll.${k}: ${f7.hitsAll[k]}, expected ${WANT_ALL[k]} (§8.5)`);
+  if (f7.hitsHome[k] !== WANT_HOME[k])
+    planeFail.push(`seed 7 hitsHome.${k}: ${f7.hitsHome[k]}, expected ${WANT_HOME[k]} (§8.5)`);
+}
+
+// the survivors' map hides the engine an order of magnitude more than any zone
+const ratio7 = (k: MpZoneKey) => f7.hitsAll[k] / f7.hitsHome[k];
+if (ratio7('engine') < 4)
+  planeFail.push(`engine all/home ratio ${ratio7('engine').toFixed(1)}, expected ≥ 4 (the illusion)`);
+for (const k of MP_KEYS)
+  if (k !== 'engine' && ratio7(k) >= 3.2)
+    planeFail.push(`${k} all/home ratio ${ratio7(k).toFixed(1)}, expected < 3.2`);
+
+// armor monotonicity on the mean over the gate family: plating the lethal-but-
+// invisible zones beats plating the riddled ones beats plating nothing
+const meanSurv = (load: typeof MP_NO_ARMOR, batch = 2000) => {
+  let s = 0;
+  for (let i = 0; i < batch; i++) s += mpFleet(i + 1, load).survival;
+  return (100 * s) / batch;
+};
+const survNone = meanSurv(MP_NO_ARMOR);
+const survNaive = meanSurv(mpArmorOf('wings', 'fuselage'));
+const survCorrect = meanSurv(mpArmorOf('engine', 'tail'));
+if (!(survCorrect > survNaive && survNaive > survNone))
+  planeFail.push(
+    `armor ordering broke: correct ${survCorrect.toFixed(1)} / naive ${survNaive.toFixed(1)} / none ${survNone.toFixed(1)}`,
+  );
+
+// Wald's baked worked example is internally consistent
+if (MP_WALD.returningByHits.reduce((a, b) => a + b, 0) !== MP_WALD.returned)
+  planeFail.push('Wald: returning-by-hits does not sum to 380');
+if (MP_WALD.flew - MP_WALD.returned !== MP_WALD.downed) planeFail.push('Wald: flew − returned ≠ downed');
+
+console.log('  The Missing Planes — the survivors map hides the engine (seed 7 = §8.5):');
+console.log(
+  `    all    fuselage ${f7.hitsAll.fuselage} · wings ${f7.hitsAll.wings} · tail ${f7.hitsAll.tail} · engine ${f7.hitsAll.engine}`,
+);
+console.log(
+  `    home   fuselage ${f7.hitsHome.fuselage} · wings ${f7.hitsHome.wings} · tail ${f7.hitsHome.tail} · engine ${f7.hitsHome.engine}  (engine hidden ${ratio7('engine').toFixed(1)}×)`,
+);
+console.log(
+  `    armor  none ${survNone.toFixed(1)}% · naive ${survNaive.toFixed(1)}% · engine+tail ${survCorrect.toFixed(1)}%`,
+);
+console.log(`    ${planeFail.length ? planeFail.length + ' problem(s)' : 'ok'}\n`);
+failures.push(...planeFail);
 
 // ── report ──────────────────────────────────────────────────────────────────
 

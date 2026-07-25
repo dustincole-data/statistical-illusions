@@ -1,0 +1,495 @@
+---
+/**
+ * Illusion 04 · The Missing Planes.
+ *
+ * The seven slots, filled and ported into the shared Shell exactly as the hero,
+ * the Reversal and the Positive are. The fleet is a live seeded simulation drawn
+ * in the reader's browser by `scripts/the-missing-planes.ts`; the only baked
+ * numbers are Wald's own worked example. No dataset, nothing server-rendered.
+ *
+ * ⚠ The damage map is a SIMULATION and the exhibit says so (§5): Wald published
+ * no damage table, so every bullet on this plane is ours. Copy is an in-register
+ * draft, voiced against the figure. No em dashes in any rendered string (the
+ * anthology sweep); protected quotations keep the punctuation of their source.
+ */
+import Shell from '../layouts/Shell.astro';
+import Slot from '../components/Slot.astro';
+import Figure from '../components/Figure.astro';
+import Sidenote from '../components/Sidenote.astro';
+import { bySlug, kickerOf } from '../lib/illusions';
+
+const illusion = bySlug('the-missing-planes')!;
+---
+
+<Shell
+  title={`${illusion.name} · Statistical Illusions`}
+  description={illusion.lede!}
+  illusion={illusion}
+>
+  {/* ── 1 · FRAME ── */}
+  <Slot slot="frame" label={kickerOf(illusion)} heading={illusion.name} lede={illusion.lede}>
+    <Sidenote title="You are the analyst, not the pilot.">
+      <p>
+        A wave of bombers flies a raid and most of them come back. You get to look the survivors
+        over, count where they are hit, and decide where to bolt on armor plate for the next wave.
+        Armor is heavy, so you cannot cover the whole plane; you have to choose.
+      </p>
+      <p>
+        The damage is right there in front of you, measured and complete. <b>You will still put the
+        armor in the wrong place, for a reason that is invisible precisely because it worked.</b>
+      </p>
+      <Fragment slot="note">
+        This is survivorship bias. It has a name because the sample you can see was chosen by the
+        very thing you are trying to study, which is the first sign it is worth ninety seconds of
+        your attention.
+      </Fragment>
+    </Sidenote>
+  </Slot>
+
+  {/* ── 2 · SETUP — the returning fleet, and where it came from ── */}
+  <Slot slot="setup" id="mp-setup" label="Setup" title="The planes that came back">
+    <div class="body">
+      <p>
+        Here is your fleet after the raid: the planes that made it home, with every hit on them
+        marked. The fuselage is peppered. The wings are peppered. The engines are almost clean. You
+        have armor for two parts of the plane, no more, and the question is where it goes.
+      </p>
+    </div>
+
+    <div class="pprov">
+      <div class="l">Before you start, one honest note</div>
+      <p id="mp-prov"></p>
+    </div>
+
+    <div class="dare">
+      <div class="l">What is on the table, and what is not</div>
+      <p>
+        The map is complete for the planes in front of you. Nothing about them is hidden and nothing
+        is revealed later that was withheld now. Count the holes, plate the two zones you judge most
+        exposed, and send up the next wave.
+      </p>
+      <p>
+        The only thing held back is the wave itself: what happens when you fly the fleet with your
+        armor on it, and one thing about the planes that are not in front of you.
+      </p>
+    </div>
+  </Slot>
+
+  {/* ── 3 · OPERATE — place the armor ── */}
+  <Slot slot="operate" id="mp-operate" label="Operate" title="Plate the plane">
+    <Sidenote title="Armor where the damage is.">
+      <p>
+        Each panel below is a zone, with the number of hits your surviving planes took there. Plate
+        the two you think will save the most planes. The obvious move is to cover the zones with the
+        most holes, and that is exactly the move to make with your eyes open.
+      </p>
+      <Fragment slot="note">
+        The marks on the plane are the hits on your survivors. No survival number yet; that is the
+        thing you are about to commit to and then measure.
+      </Fragment>
+    </Sidenote>
+
+    <div class="parmor" role="group" aria-label="Choose which two zones to armor">
+      <button class="ptoggle" data-zone="fuselage" aria-pressed="false">
+        <span class="pz-name">Fuselage</span>
+        <span class="pz-hits"><b data-hits="fuselage">–</b> hits</span>
+        <span class="pz-state">plate this</span>
+      </button>
+      <button class="ptoggle" data-zone="wings" aria-pressed="false">
+        <span class="pz-name">Wings</span>
+        <span class="pz-hits"><b data-hits="wings">–</b> hits</span>
+        <span class="pz-state">plate this</span>
+      </button>
+      <button class="ptoggle" data-zone="tail" aria-pressed="false">
+        <span class="pz-name">Tail</span>
+        <span class="pz-hits"><b data-hits="tail">–</b> hits</span>
+        <span class="pz-state">plate this</span>
+      </button>
+      <button class="ptoggle" data-zone="engine" aria-pressed="false">
+        <span class="pz-name">Engines</span>
+        <span class="pz-hits"><b data-hits="engine">–</b> hits</span>
+        <span class="pz-state">plate this</span>
+      </button>
+    </div>
+
+    <p class="pbudget" id="mp-budget" aria-live="polite"></p>
+
+    <Figure
+      id="pfleet"
+      viewBox="0 0 880 460"
+      title="Your returning bombers"
+      question="every hit on the planes that came home"
+      ariaLabel="A four-engine bomber seen from above, divided into fuselage, wings, tail and engines. Dark marks are hits on the planes that returned; the fuselage and wings are peppered, the engines nearly clean. When the fleet is flown, hot marks appear for the hits on planes that never came back, flooding the engines. Indigo plates show the zones you armored."
+      caption="Fig. 1 · your surviving bombers, with every hit marked. This map is generated in your browser, not a record of any real raid. The engines look clean; hold that thought until the wave is up."
+    >
+      <Fragment slot="readout">
+        <span class="mono" style="color:var(--faint)">plate two zones, then fly</span>
+      </Fragment>
+
+      <Fragment slot="legend">
+        <div class="lg"><span class="psw psw-seen"></span> a hit that came home</div>
+        <div class="lg"><span class="psw psw-missing"></span> a hit that did not</div>
+        <div class="lg"><span class="psw psw-armor"></span> your armor</div>
+      </Fragment>
+    </Figure>
+  </Slot>
+
+  {/* ── 4 · COMMIT — lock the loadout, one way ── */}
+  <Slot
+    slot="commit"
+    id="mp-commit"
+    label="Commit"
+    title="Send up the fleet"
+    lockNote="· unlocks once you plate a zone"
+    locked
+  >
+    <div class="body">
+      <p>
+        This is the armor the next wave flies with. There is no calling them back to re-plate once
+        they are up, here or over Europe. Commit to it.
+      </p>
+    </div>
+
+    <div class="control">
+      <button class="btn commit" id="mp-fly">Fly the fleet →</button>
+      <span class="ctlnote">One wave. The count comes back as it comes back, and it does not move to spare you.</span>
+    </div>
+
+    <div class="pubcard" id="mp-loadcard" aria-live="polite">
+      <span class="stamp">Your loadout</span>
+      <p class="finding" id="mp-loadline">–</p>
+      <div class="meta" id="mp-loadmeta"></div>
+    </div>
+  </Slot>
+
+  {/* ── 5 · REVEAL — fly, then count the ones that never came home ── */}
+  <Slot
+    slot="reveal"
+    id="mp-reveal"
+    label="Reveal"
+    title="Now fly it, and count the missing"
+    lockNote="· unlocks when you commit"
+    locked
+  >
+    <div class="revealline">
+      <p class="r">You armored where the holes were. The holes were where the plane could take a hit and still come home.</p>
+    </div>
+
+    <div class="psurv" aria-hidden="true">
+      <div class="psurv-track">
+        <span class="pmark pmark-base" id="mp-base-mark"></span>
+        <span class="pmark pmark-you" id="mp-you-mark"></span>
+      </div>
+      <div class="psurv-ends"><span>none survive</span><span>all survive</span></div>
+      <div class="psurv-nums">
+        <span class="pn-base" id="mp-base-num"></span>
+        <span class="pn-you" id="mp-you-num"></span>
+      </div>
+    </div>
+
+    <div class="counters" aria-live="polite">
+      <div class="ctr">
+        <div class="cl">Planes home, with your armor</div>
+        <div class="cv" id="mp-c-surv">–</div>
+        <div class="cn">out of the 400 you sent up</div>
+      </div>
+      <div class="ctr">
+        <div class="cl">Better than no armor by</div>
+        <div class="cv" id="mp-c-delta">–</div>
+        <div class="cn">the planes your plate actually saved</div>
+      </div>
+      <div class="ctr">
+        <div class="cl">Engine hits: seen vs flew</div>
+        <div class="cv" id="mp-c-engine">–</div>
+        <div class="cn">the map understated the engines this much</div>
+      </div>
+    </div>
+
+    <Sidenote title="Same map, opposite reading.">
+      <p id="mp-revealbody"></p>
+      <Fragment slot="note">
+        The engines looked safe because a plane hit in the engines rarely made it back to be counted.
+        The clean zone on your map was not the safe zone. It was the fatal one.
+      </Fragment>
+    </Sidenote>
+  </Slot>
+
+  {/* ── 6 · REPAIR — armor where the survivors are not hit, and what Wald did ── */}
+  <Slot
+    slot="repair"
+    id="mp-repair"
+    label="Repair"
+    title="So where does the armor go"
+    lockNote="· unlocks after the reveal"
+    locked
+  >
+    <Sidenote title="The move that runs against the map.">
+      <p>
+        Armor the parts of the survivors that are <b>not</b> hit. The gaps in the returning planes
+        are not lucky; they are the wounds that were fatal, so the planes that got them are not in
+        your sample. Plate the clean zones, especially the engines, and fly again.
+      </p>
+      <Fragment slot="note">
+        This is the whole correction, and it is counterintuitive on purpose: the data points exactly
+        the wrong way, and reading it right means arguing with what is in front of you.
+      </Fragment>
+    </Sidenote>
+
+    <div class="control">
+      <button class="btn" id="mp-repair-btn">Re-plate the engines and fly →</button>
+      <span class="ctlnote">Same fleet, same hits, the plate moved to where the map said it was safe.</span>
+    </div>
+
+    <div class="body repaired" id="mp-repairbody" hidden>
+      <p id="mp-repairline"></p>
+      <p>
+        That is survivorship bias in one raid: the evidence was complete, honest, and pointed the
+        wrong way, because it had already been filtered by the outcome you were trying to protect
+        against. Nobody had to hide anything. The missing planes did that for free.
+      </p>
+    </div>
+
+    <div class="pwald">
+      <div class="pwald-h">What Abraham Wald actually did, 1943</div>
+      <p>
+        Wald worked from exactly this problem for the Statistical Research Group. In one worked
+        example, of 400 planes sent up, 380 came back carrying this many hits each. From the
+        survivors alone he estimated the chance a plane survived a given hit at about 0.85.
+      </p>
+      <div class="pwald-bars" aria-hidden="true">
+        <div class="pw-row"><span class="pw-k">0 hits</span><span class="pw-bar" style="--w:100%"></span><span class="pw-n">320</span></div>
+        <div class="pw-row"><span class="pw-k">1 hit</span><span class="pw-bar" style="--w:10%"></span><span class="pw-n">32</span></div>
+        <div class="pw-row"><span class="pw-k">2 hits</span><span class="pw-bar" style="--w:6.25%"></span><span class="pw-n">20</span></div>
+        <div class="pw-row"><span class="pw-k">3 hits</span><span class="pw-bar" style="--w:1.25%"></span><span class="pw-n">4</span></div>
+        <div class="pw-row"><span class="pw-k">4 hits</span><span class="pw-bar" style="--w:0.6%"></span><span class="pw-n">2</span></div>
+        <div class="pw-row"><span class="pw-k">5 hits</span><span class="pw-bar" style="--w:0.6%"></span><span class="pw-n">2</span></div>
+      </div>
+      <p class="pwald-note">
+        400 flew, 380 returned, 20 did not; his per-hit survival estimate was 0.851. These are his
+        own numbers from a hypothetical worked example, not a real damage table; no such table was
+        ever published, which is the point.
+      </p>
+    </div>
+  </Slot>
+
+  {/* ── 7 · DEBRIEF — absence, authority, caveat ── */}
+  <Slot
+    slot="debrief"
+    id="mp-debrief"
+    label="Debrief"
+    title="What just happened"
+    lockNote="· unlocks after the repair"
+    locked
+  >
+    <div class="body">
+      <p>
+        You read a complete, accurate map and armored the wrong plane, the same way a careful person
+        would. Nothing was rigged. The map was true about the planes it showed. The trouble is which
+        planes it showed: only the ones that lived, which is the same as saying only the ones whose
+        wounds were survivable.
+      </p>
+    </div>
+
+    <div class="debrief">
+      <div class="dblock">
+        <div class="dl">What was absent from the table</div>
+        <p class="dt">
+          The planes that did not come home. Every hole in your survivors is a hit a plane walked
+          away from; the hits that did not get walked away from left with the plane. The danger was
+          not in the map and there was nothing in the map to point at, because the evidence for it
+          had removed itself. It is the population nobody counted.
+        </p>
+      </div>
+      <div class="dblock">
+        <div class="dl">Who caught this</div>
+        <p class="dt">
+          <b>Abraham Wald</b>, working for the <b>Statistical Research Group</b> in 1943, built a way
+          to estimate damage he could not observe from the survivors he could
+          (<i>A Method of Estimating Plane Vulnerability Based on Damage of Survivors</i>, reprinted
+          1980). <b>W. Allen Wallis</b> recorded the group's work (<i>JASA</i> 75(370), 1980);
+          <b>Mangel and Samaniego</b> gave it a full modern reading (<i>JASA</i> 79(386), 1984); and
+          <b>Bill Casselman</b> separated the record from the legend (<i>AMS Feature Column</i>, 2016).
+        </p>
+      </div>
+      <div class="dblock">
+        <div class="dl">One honest caveat</div>
+        <p class="dt" id="mp-caveat"></p>
+        <p class="dt">
+          And the famous version of this story is itself a survivor. The bullet-riddled diagram, the
+          officers, the retort, most of it is not in the record; the vivid telling outlived its own
+          caveats, which is the same lesson one more time. The essay's closing panel,
+          <a class="link" href="/#the-planes-that-came-back">the planes that came back</a>, sets the
+          story beside the record.
+        </p>
+      </div>
+    </div>
+  </Slot>
+
+  {/* The exhibit's last affordance: send up a fresh, uncurated fleet. */}
+  <Fragment slot="foot">
+    <button class="btn ghost" id="mp-reset">↻ Send up a new fleet</button>
+  </Fragment>
+</Shell>
+
+<script>
+  import '../scripts/the-missing-planes';
+</script>
+
+<style>
+  /* ── the simulated-map provenance note ── */
+  .pprov {
+    max-width: var(--measure);
+    margin: 22px 0 0;
+    border-left: 2px solid var(--accent);
+    background: var(--accent-soft);
+    border-radius: 0 10px 10px 0;
+    padding: 13px 18px;
+  }
+  .pprov .l {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--accent-ink);
+    margin-bottom: 6px;
+  }
+  .pprov p { margin: 0; font-size: var(--t-small); color: var(--body); line-height: 1.6 }
+
+  /* ── Operate: the four armor toggles ── */
+  .parmor {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+    margin: 8px 0 0;
+    max-width: 900px;
+  }
+  .ptoggle {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+    border: 1px solid var(--line);
+    border-radius: 11px;
+    background: var(--surface);
+    padding: 14px 15px;
+    cursor: pointer;
+    text-align: left;
+    transition: border-color .18s var(--ease), background .18s var(--ease);
+  }
+  .ptoggle:hover:not(:disabled) { border-color: var(--accent) }
+  .ptoggle:disabled { cursor: default; opacity: .62 }
+  .ptoggle[aria-pressed='true'] {
+    border-color: var(--accent);
+    background: var(--accent-soft);
+    box-shadow: inset 0 0 0 1px var(--accent);
+  }
+  .ptoggle .pz-name { font-size: var(--t-body); color: var(--ink); font-weight: 500 }
+  .ptoggle .pz-hits { font-family: var(--font-mono); font-size: 12px; color: var(--muted) }
+  .ptoggle .pz-hits b { color: var(--ink); font-weight: 500 }
+  .ptoggle .pz-state {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: var(--faint);
+  }
+  .ptoggle[aria-pressed='true'] .pz-state { color: var(--accent-ink) }
+
+  .pbudget {
+    max-width: 900px;
+    margin: 16px 0 0;
+    font-size: var(--t-small);
+    color: var(--body);
+    line-height: 1.55;
+    border-top: 1px solid var(--line);
+    padding-top: 13px;
+  }
+  .pbudget b { color: var(--ink); font-weight: 500 }
+  .pbudget.full { color: var(--accent-ink) }
+
+  /* ── figure legend swatches + the svg annotation type ── */
+  .psw { width: 11px; height: 11px; border-radius: 50%; flex-shrink: 0 }
+  .psw-seen { background: #3A3F4A }
+  .psw-missing { background: #C42E1A }
+  .psw-armor { background: var(--accent) }
+  :global(svg .plabel) {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: .04em;
+    fill: var(--faint);
+  }
+  :global(svg .pannot) {
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    font-weight: 600;
+    paint-order: stroke;
+    stroke: var(--panel);
+    stroke-width: 3.5px;
+    stroke-linejoin: round;
+  }
+  :global(svg .pannotsub) { font-family: var(--font-mono); font-size: 11px }
+
+  /* ── Reveal: the survival bar ── */
+  .psurv { max-width: 620px; margin: 26px 0 4px }
+  .psurv-track {
+    position: relative;
+    height: 8px;
+    border-radius: 5px;
+    background: linear-gradient(90deg, var(--sig-3) 0%, #EBC9A0 55%, var(--null) 100%);
+    opacity: .85;
+  }
+  .pmark {
+    position: absolute;
+    top: 50%;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    border: 2px solid var(--panel);
+    transition: left .7s var(--ease);
+  }
+  .pmark-base { background: var(--faint); z-index: 1 }
+  .pmark-you { background: var(--accent); z-index: 2 }
+  .psurv-ends {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    color: var(--faint);
+    margin-top: 10px;
+    letter-spacing: .02em;
+  }
+  .psurv-nums {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 8px;
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+  }
+  .pn-base { color: var(--faint) }
+  .pn-you { color: var(--accent) }
+
+  #mp-revealbody b { color: var(--ink); font-weight: 500 }
+  .counters .cv#mp-c-engine { font-size: 22px; letter-spacing: -0.01em }
+
+  /* ── Repair: Wald's worked example ── */
+  .pwald { max-width: var(--measure); margin: 30px 0 0; border-top: 1px solid var(--line); padding-top: 20px }
+  .pwald-h {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--faint);
+    margin-bottom: 12px;
+  }
+  .pwald p { color: var(--body); font-size: var(--t-small); line-height: 1.62; margin: 0 }
+  .pwald-bars { margin: 16px 0; display: grid; gap: 6px; max-width: 460px }
+  .pw-row { display: grid; grid-template-columns: 54px 1fr 34px; align-items: center; gap: 10px }
+  .pw-k { font-family: var(--font-mono); font-size: 11px; color: var(--muted) }
+  .pw-bar { height: 12px; width: var(--w); min-width: 3px; background: var(--accent); border-radius: 3px; opacity: .8 }
+  .pw-n { font-family: var(--font-mono); font-size: 11.5px; color: var(--ink); text-align: right }
+  .pwald-note { margin-top: 14px; color: var(--muted); font-size: var(--t-small) }
+
+  #mp-repairline b { color: var(--ink); font-weight: 500 }
+</style>

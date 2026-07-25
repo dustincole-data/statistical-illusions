@@ -205,6 +205,7 @@ async function main() {
   const forkingPaths = ILLUSIONS[0]!;
   const reversal = ILLUSIONS[1]!;
   const positive = ILLUSIONS[2]!;
+  const planes = ILLUSIONS[3]!;
   const routes: Array<{ slug: string; opts: CardOpts }> = [
     {
       slug: 'index',
@@ -235,6 +236,14 @@ async function main() {
         kicker: kickerOf(positive),
         title: positive.name,
         description: positive.lede!,
+      },
+    },
+    {
+      slug: 'the-missing-planes',
+      opts: {
+        kicker: kickerOf(planes),
+        title: planes.name,
+        description: planes.lede!,
       },
     },
     {

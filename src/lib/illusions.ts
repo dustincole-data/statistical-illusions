@@ -54,7 +54,8 @@ export const ILLUSIONS: Illusion[] = [
     slug: 'the-missing-planes',
     name: 'The Missing Planes',
     mechanism: 'AN UNCOUNTED POPULATION',
-    live: false,
+    lede: 'You armor the plane where the bullets are. The bullets are where it lived.',
+    live: true,
   },
 ];
 
