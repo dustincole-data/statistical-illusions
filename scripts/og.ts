@@ -204,6 +204,7 @@ async function main() {
 
   const forkingPaths = ILLUSIONS[0]!;
   const reversal = ILLUSIONS[1]!;
+  const positive = ILLUSIONS[2]!;
   const routes: Array<{ slug: string; opts: CardOpts }> = [
     {
       slug: 'index',
@@ -226,6 +227,14 @@ async function main() {
         kicker: kickerOf(reversal),
         title: reversal.name,
         description: reversal.lede!,
+      },
+    },
+    {
+      slug: 'the-positive',
+      opts: {
+        kicker: kickerOf(positive),
+        title: positive.name,
+        description: positive.lede!,
       },
     },
     {

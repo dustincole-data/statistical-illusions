@@ -52,6 +52,14 @@ import {
   seasonWinner,
   winnerAt,
 } from '../src/scripts/the-reversal.model';
+import {
+  DEFAULT as P_DEFAULT,
+  GIGERENZER as P_GIG,
+  frequencies as pFreq,
+  oneIn as pOneIn,
+  ppv as pPPV,
+  prevalenceForPPV as pCross,
+} from '../src/scripts/the-positive.model';
 
 const TRIALS_GARDEN = 4_000;
 const TRIALS_SINGLE = 20_000;
@@ -237,6 +245,57 @@ console.log(
 );
 console.log(`    ${revFail.length ? revFail.length + ' problem(s)' : 'ok'}\n`);
 failures.push(...revFail);
+
+// ── Illusion 03 · The Positive — deterministic, no RNG ──────────────────────
+//
+// No simulation: three constants and one line of Bayes. The gate pins the
+// published PPVs, the exact 50% crossover, Gigerenzer's 9 of 98, and the
+// reader's default array. A typo in the closed form moves a percentage the
+// piece prints and fails the build, the way a bad degrees-of-freedom does
+// upstream.
+
+const posFail: string[] = [];
+const pctOf = (x: number) => (x * 100).toFixed(1);
+const eqp = (label: string, got: string, want: string) => {
+  if (got !== want) posFail.push(`${label}: got ${got}, expected ${want}`);
+};
+
+// the published design space (§8.4)
+eqp('PPV 1% / 95% / 95%', pctOf(pPPV({ prev: 0.01, sens: 0.95, spec: 0.95 })), '16.1');
+eqp('PPV 0.8% / 90% / 93%', pctOf(pPPV({ prev: 0.008, sens: 0.9, spec: 0.93 })), '9.4');
+eqp('PPV 0.1% / 99% / 99%', pctOf(pPPV({ prev: 0.001, sens: 0.99, spec: 0.99 })), '9.0');
+// the 95/95 test is worth a coin flip only at 5% prevalence, and no lower
+if (Math.abs(pCross(0.5, 0.95, 0.95) - 0.05) > 1e-9)
+  posFail.push(`50% crossover: ${pCross(0.5, 0.95, 0.95).toFixed(5)}, expected 0.05000`);
+if (pPPV({ prev: 0.01, sens: 0.99, spec: 0.99 }) >= 0.5)
+  posFail.push('a 99/99 test at 1% prevalence should still fall below 50%');
+
+// Gigerenzer's mammography array, exactly 9 of 98
+const gf = pFreq(P_GIG.design, 1000);
+if (gf.sick !== 10 || gf.truePos !== 9 || gf.falsePos !== 89 || gf.flagged !== 98)
+  posFail.push(`Gigerenzer array: ${gf.truePos}/${gf.flagged} (sick ${gf.sick}, false ${gf.falsePos}), expected 9/98`);
+
+// the reader's default: 10 sick, 60 flagged, about 1 in 6
+const df = pFreq(P_DEFAULT, 1000);
+if (df.sick !== 10 || df.truePos !== 10 || df.falsePos !== 50 || df.flagged !== 60)
+  posFail.push(`default array: ${df.truePos}/${df.flagged}, expected 10/60`);
+eqp('default natural frequency', pOneIn(df), 'about 1 in 6');
+// the four groups reconstruct the whole population at every setting
+for (const d of [P_DEFAULT, P_GIG.design, { prev: 0.05, sens: 0.95, spec: 0.95 }]) {
+  const f = pFreq(d, 1000);
+  if (f.truePos + f.falseNeg + f.falsePos + f.trueNeg !== 1000)
+    posFail.push(`array does not sum to 1000 at prev ${d.prev}`);
+}
+
+console.log('  The Positive — a 95/95 test on a 1-in-100 disease:');
+console.log(
+  `    default   PPV ${pctOf(pPPV(P_DEFAULT))}% · ${df.truePos} true / ${df.falsePos} false of ${df.flagged} flagged · ${pOneIn(df)}`,
+);
+console.log(
+  `    crossover 50% PPV at prevalence ${(pCross(0.5, 0.95, 0.95) * 100).toFixed(1)}% · Gigerenzer ${gf.truePos} of ${gf.flagged}`,
+);
+console.log(`    ${posFail.length ? posFail.length + ' problem(s)' : 'ok'}\n`);
+failures.push(...posFail);
 
 // ── report ──────────────────────────────────────────────────────────────────
 

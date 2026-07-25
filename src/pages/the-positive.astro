@@ -1,0 +1,514 @@
+---
+/**
+ * Illusion 03 · The Positive.
+ *
+ * The seven slots, filled and ported into the shared Shell exactly as the hero
+ * and the Reversal are. Every number the reader confronts is computed in their
+ * browser by `scripts/the-positive.ts` from three dials they set themselves. No
+ * dataset, nothing server-rendered.
+ *
+ * Copy is an in-register draft, voiced against the figure. No em dashes in any
+ * rendered string (the anthology sweep); protected quotations are rendered with
+ * the punctuation they carry in the source.
+ */
+import Shell from '../layouts/Shell.astro';
+import Slot from '../components/Slot.astro';
+import Figure from '../components/Figure.astro';
+import Sidenote from '../components/Sidenote.astro';
+import { bySlug, kickerOf } from '../lib/illusions';
+
+const illusion = bySlug('the-positive')!;
+---
+
+<Shell
+  title={`${illusion.name} · Statistical Illusions`}
+  description={illusion.lede!}
+  illusion={illusion}
+>
+  {/* ── 1 · FRAME ── */}
+  <Slot slot="frame" label={kickerOf(illusion)} heading={illusion.name} lede={illusion.lede}>
+    <Sidenote title="You are the one designing the test.">
+      <p>
+        A screening test is judged on two numbers. How often it catches the disease when it is there,
+        called sensitivity, and how often it clears you when it is not, called specificity. A test
+        that scores high on both is, by any ordinary use of the word, a good test.
+      </p>
+      <p>
+        You are going to build one, point it at a population, and then answer a single question about
+        it. Not whether it is any good. Whether a positive result from it means anything. <b>Those are
+        not the same question, and the gap between them is the whole illusion.</b>
+      </p>
+      <Fragment slot="note">
+        This is base-rate neglect. It has a name because it fools the people who order these tests for
+        a living, which is the first sign it is worth ninety seconds of your attention.
+      </Fragment>
+    </Sidenote>
+  </Slot>
+
+  {/* ── 2 · SETUP — the brief, and the three words as counts ── */}
+  <Slot slot="setup" id="p-setup" label="Setup" title="The brief">
+    <div class="body">
+      <p>
+        Build a screening test you would be happy to call excellent, and decide who to screen with it.
+        You have three dials. To keep them honest, here is what each one means, counted out in people
+        rather than percentages.
+      </p>
+    </div>
+
+    <div class="pterms">
+      <div class="pterm">
+        <div class="tl">Sensitivity</div>
+        <p>Of every 10 people who <b>have</b> the disease, how many the test correctly flags.</p>
+      </div>
+      <div class="pterm">
+        <div class="tl">Specificity</div>
+        <p>Of every 100 people who are <b>healthy</b>, how many the test correctly clears.</p>
+      </div>
+      <div class="pterm">
+        <div class="tl">Prevalence</div>
+        <p>Of every 1,000 people you <b>screen</b>, how many actually have the disease.</p>
+      </div>
+    </div>
+
+    <div class="dare">
+      <div class="l">What is on the table, and what is not</div>
+      <p>
+        Every number is one you set, in the open. Nothing is hidden now and nothing is revealed later
+        that was withheld from you at the start.
+      </p>
+      <p>
+        The only thing held back is the crowd your test produces. You will build the test, say what a
+        positive from it is worth, and only then count the people it flags. You will still be surprised.
+      </p>
+    </div>
+  </Slot>
+
+  {/* ── 3 · OPERATE — design the test ── */}
+  <Slot slot="operate" id="p-operate" label="Operate" title="Design the test">
+    <Sidenote title="Make it as good as you like.">
+      <p>
+        Set all three dials. Push sensitivity and specificity as high as you can; a real screening
+        test rarely clears the high nineties on both, but you are allowed to. Then choose how common
+        the disease is in the people you point it at.
+      </p>
+      <Fragment slot="note">
+        The grid is your screened population, one dot per person. The coral dots are the ones who
+        actually have it. Watch how few they are.
+      </Fragment>
+    </Sidenote>
+
+    <div class="pdials">
+      <div class="pdial">
+        <label for="p-sens">Sensitivity <span class="dv" id="p-sens-v">95%</span></label>
+        <input type="range" id="p-sens" min="0" max="1" step="0.001" aria-label="Sensitivity, how often the test catches the disease" />
+        <span class="de">catches the sick</span>
+      </div>
+      <div class="pdial">
+        <label for="p-spec">Specificity <span class="dv" id="p-spec-v">95%</span></label>
+        <input type="range" id="p-spec" min="0" max="1" step="0.001" aria-label="Specificity, how often the test clears the healthy" />
+        <span class="de">clears the healthy</span>
+      </div>
+      <div class="pdial">
+        <label for="p-prev">Prevalence <span class="dv" id="p-prev-v">1%</span></label>
+        <input type="range" id="p-prev" min="0" max="1" step="0.001" aria-label="Prevalence, how common the disease is in the screened population" />
+        <span class="de">how common it is</span>
+      </div>
+    </div>
+
+    <p class="ptest" id="p-testline" aria-live="polite"></p>
+
+    <Figure
+      id="pfield"
+      viewBox="0 0 880 440"
+      title="One thousand people you screened"
+      question="each dot is one person"
+      ariaLabel="A grid of one thousand dots, one per person in the screened population. The coral dots are the people who actually have the disease; the rest are healthy. When the test resolves, the people it flags gather at the top, coral for the truly sick and teal for the healthy it flagged by mistake."
+      caption="Fig. 1 · your screened population, one dot per person. The coral dots up in the corner are the ones who actually have the condition. The flags your test raises are held back until you commit a guess."
+    >
+      <Fragment slot="readout">
+        <span class="mono" style="color:var(--faint)">set the dials to build your test</span>
+      </Fragment>
+
+      <Fragment slot="legend">
+        <div class="lg"><span class="psw psw-sick"></span> has the condition</div>
+        <div class="lg"><span class="psw psw-false"></span> flagged, but healthy</div>
+        <div class="lg"><span class="psw psw-clear"></span> cleared</div>
+      </Fragment>
+    </Figure>
+  </Slot>
+
+  {/* ── 4 · COMMIT — guess what a positive is worth, one way ── */}
+  <Slot
+    slot="commit"
+    id="p-commit"
+    label="Commit"
+    title="Say what a positive is worth"
+    lockNote="· unlocks once you design the test"
+    locked
+  >
+    <div class="body">
+      <p>
+        Here is the one question. Take everyone your test flags as positive, the whole pile of them,
+        and ask how many actually have the disease. Not how good the test is. What a single positive
+        result from it is worth. Commit to a number. There is no unpick button, here or in a doctor's
+        office.
+      </p>
+    </div>
+
+    <div class="pguess">
+      <label for="p-guess">Of every 100 your test flags, how many actually have it?</label>
+      <div class="pguess-row">
+        <input type="range" id="p-guess" min="0" max="100" step="1" value="50" aria-label="Your guess: of every 100 flagged, how many are actually sick" />
+        <output class="pguess-out" id="p-guessout">50 in 100</output>
+      </div>
+      <div class="control">
+        <button class="btn commit" id="p-lock">Lock in my guess</button>
+        <span class="ctlnote">One way. The count comes next, and it does not move to spare you.</span>
+      </div>
+    </div>
+
+    <div class="pubcard" id="p-pubcard" aria-live="polite">
+      <span class="stamp">Your guess</span>
+      <p class="finding" id="p-finding">–</p>
+      <div class="meta" id="p-pubmeta"></div>
+    </div>
+  </Slot>
+
+  {/* ── 5 · REVEAL — resolve the flags on the same array ── */}
+  <Slot
+    slot="reveal"
+    id="p-reveal"
+    label="Reveal"
+    title="Now count the ones it flagged"
+    lockNote="· unlocks when you commit"
+    locked
+  >
+    <div class="revealline">
+      <p class="r">You built a test almost anyone would call excellent. Most of the people it flags are healthy.</p>
+    </div>
+
+    <div class="pscale" aria-hidden="true">
+      <div class="pscale-track">
+        <span class="pscale-mid" id="p-scale-mid"></span>
+        <span class="pmark pmark-guess" id="p-guess-mark"></span>
+        <span class="pmark pmark-truth" id="p-truth-mark"></span>
+      </div>
+      <div class="pscale-ends"><span>0</span><span>a coin flip</span><span>100</span></div>
+      <div class="pscale-nums">
+        <span class="pn-guess" id="p-guess-num"></span>
+        <span class="pn-truth" id="p-truth-num"></span>
+      </div>
+    </div>
+
+    <div class="counters" aria-live="polite">
+      <div class="ctr">
+        <div class="cl">People your test flagged</div>
+        <div class="cv" id="p-c-flagged">–</div>
+        <div class="cn">out of the 1,000 you screened</div>
+      </div>
+      <div class="ctr">
+        <div class="cl">Of those, actually sick</div>
+        <div class="cv" id="p-c-sick">–</div>
+        <div class="cn">the ones the test was for</div>
+      </div>
+      <div class="ctr">
+        <div class="cl">So a positive is worth</div>
+        <div class="cv" id="p-c-ppv">–</div>
+        <div class="cn">the answer to the one question</div>
+      </div>
+    </div>
+
+    <Sidenote title="Gigerenzer, Gaissmaier et al. (2007)">
+      <p id="p-revealbody"></p>
+      <Fragment slot="note">
+        160 gynaecologists were asked this exact question about mammography. Before training, most
+        answered 90% or 81%; 21% gave the best answer, slightly worse than guessing among four options.
+        After learning to think in counts, 87% got it. You are in good company, in both directions.
+      </Fragment>
+    </Sidenote>
+
+    <div class="pquote">
+      <p>
+        Gerd Gigerenzer put the textbook version to doctors as a probability: a 1% prevalence, a test
+        that catches 90% of cancers and falsely flags 9% of healthy women. Reframed as counts, it
+        reads:
+      </p>
+      <blockquote>
+        Ten out of every 1,000 women have breast cancer. Of these 10 women with breast cancer, 9 test
+        positive. Of the 990 women without cancer, about 89 nevertheless test positive.
+      </blockquote>
+      <p class="pq-punch">Nine of the 98 women who test positive have cancer. About 1 in 10.</p>
+    </div>
+  </Slot>
+
+  {/* ── 6 · REPAIR — the honest version: natural frequencies ── */}
+  <Slot
+    slot="repair"
+    id="p-repair"
+    label="Repair"
+    title="So what do you actually do"
+    lockNote="· unlocks after the reveal"
+    locked
+  >
+    <Sidenote title="Gigerenzer & Hoffrage (1995)">
+      <p>
+        There is a fix, and you just used it without being told. The problem is nearly impossible as
+        three percentages and nearly easy as a count of people, because counting keeps the healthy
+        crowd in view instead of normalising it away. When a result comes back positive, ask for the
+        numbers the way this figure gives them: out of how many, and how many of those are real.
+      </p>
+      <Fragment slot="note">
+        Restating probabilities as natural frequencies, counts that share one reference class, is the
+        single change that makes Bayesian reasoning tractable for most people.
+      </Fragment>
+    </Sidenote>
+
+    <div class="control">
+      <button class="btn" id="p-repair-btn">And does that actually fix it? →</button>
+      <span class="ctlnote">Partly. Be honest about how much.</span>
+    </div>
+
+    <div class="body repaired" id="p-repairbody" hidden>
+      <p>
+        Partly. The best measurement of the effect, a meta-analysis of 226 estimates across 35
+        studies, puts the share of people who get it right at 24% with counts against 4% with
+        probabilities. That is a six-fold improvement and a genuinely large one, and three quarters of
+        people still get it wrong even in the easy format. Thinking in counts is a real help, not a
+        cure.
+      </p>
+      <p>
+        And the textbook numbers flatter the test. Across 1.6 million real screening mammograms, the
+        measured chance that a positive means cancer was about 4%, closer to 1 in 23 than the 1 in 10
+        the classroom version gives. The gap runs the safe way here, but it is the same lesson: a
+        positive on a rare condition is usually a false alarm, and the better you know the base rate,
+        the less a single result should move you.
+      </p>
+    </div>
+  </Slot>
+
+  {/* ── 7 · DEBRIEF — absence, authority, caveat ── */}
+  <Slot
+    slot="debrief"
+    id="p-debrief"
+    label="Debrief"
+    title="What just happened"
+    lockNote="· unlocks after the repair"
+    locked
+  >
+    <div class="body">
+      <p>
+        You designed a good test, guessed high about what it was worth, and were wrong by a lot, in the
+        same direction almost everyone is wrong, doctors included. Nothing was rigged. The test did
+        exactly what you set it to do. The population it screened simply had so few sick people in it
+        that the test's rare mistakes outnumbered its real catches.
+      </p>
+    </div>
+
+    <div class="debrief">
+      <div class="dblock">
+        <div class="dl">What was absent from the table</div>
+        <p class="dt">
+          Every number about the test was in front of you. What did not feel like a number was the
+          crowd it was pointed at: the 990 healthy people whose small error rate does all the damage.
+          The base rate is not withheld so much as easy to forget, because it is the part of the
+          problem that is about everyone except the person in front of you. It is the population nobody
+          counted.
+        </p>
+      </div>
+      <div class="dblock">
+        <div class="dl">Who caught this</div>
+        <p class="dt">
+          <b>Casscells, Schoenberger and Graboys</b> put a version of the question to doctors in 1978
+          (<i>NEJM</i> 299(18), 999) and most missed it. <b>Kahneman and Tversky</b> named the pattern
+          the same decade (1973, <i>Psychological Review</i> 80(4), 237). <b>Gerd Gigerenzer and Ulrich
+          Hoffrage</b> showed the fix in 1995 (<i>Psychological Review</i> 102(4), 684), and Gigerenzer
+          and colleagues took it to working physicians in 2007 (<i>Psychological Science in the Public
+          Interest</i> 8(2), 53).
+        </p>
+      </div>
+      <div class="dblock">
+        <div class="dl">One honest caveat</div>
+        <p class="dt">
+          The failure is not that people cannot do arithmetic; it is that the way a question is written
+          decides how many get it right. Counts help a great deal and do not cure it, and base-rate
+          neglect is a tendency, not a law: change the wording and people sometimes lean too hard on
+          the base rate instead. And to be plain, because the subject earns it: nothing here says do
+          not get screened. It says know what a positive result is telling you.
+        </p>
+      </div>
+    </div>
+  </Slot>
+
+  {/* The exhibit's last affordance: reset and design a different test. */}
+  <Fragment slot="foot">
+    <button class="btn ghost" id="p-reset">↻ Design another test</button>
+  </Fragment>
+</Shell>
+
+<script>
+  import '../scripts/the-positive';
+</script>
+
+<style>
+  /* ── Setup: the three terms, defined as counts ── */
+  .pterms {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    gap: 14px;
+    margin: 22px 0 0;
+    max-width: 900px;
+  }
+  .pterm { border: 1px solid var(--line); border-radius: 11px; background: var(--surface); padding: 15px 16px }
+  .pterm .tl {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--faint);
+    margin-bottom: 8px;
+  }
+  .pterm p { margin: 0; font-size: var(--t-small); color: var(--body); line-height: 1.55 }
+  .pterm b { color: var(--ink); font-weight: 500 }
+
+  /* ── Operate: the three dials ── */
+  .pdials {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px 26px;
+    margin: 8px 0 0;
+    max-width: 900px;
+  }
+  .pdial { display: flex; flex-direction: column; gap: 7px }
+  .pdial label {
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: var(--muted);
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 8px;
+  }
+  .pdial .dv { color: var(--ink); font-size: 15px; letter-spacing: 0 }
+  .pdial input[type='range'] { width: 100%; margin: 0; accent-color: var(--accent); cursor: pointer }
+  .pdial input[type='range']:disabled { cursor: default; opacity: .6 }
+  .pdial .de { font-family: var(--font-mono); font-size: 10.5px; color: var(--faint); letter-spacing: .03em }
+
+  .ptest {
+    max-width: 900px;
+    margin: 20px 0 0;
+    font-size: var(--t-small);
+    color: var(--body);
+    line-height: 1.6;
+    border-top: 1px solid var(--line);
+    padding-top: 14px;
+  }
+  .ptest b { color: var(--ink); font-weight: 500 }
+
+  /* ── figure legend swatches + the svg annotation type ── */
+  .psw { width: 11px; height: 11px; border-radius: 50%; flex-shrink: 0 }
+  .psw-sick { background: #E1583F }
+  .psw-false { background: #2E9E96 }
+  .psw-clear { background: #DCDFE4 }
+  :global(svg .pannot) {
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    fill: var(--ink);
+    font-weight: 600;
+    paint-order: stroke;
+    stroke: var(--panel);
+    stroke-width: 3.5px;
+    stroke-linejoin: round;
+  }
+  :global(svg .pannotsub) { font-family: var(--font-mono); font-size: 11px }
+
+  /* ── Commit: the guess ── */
+  .pguess { max-width: 900px; margin: 4px 0 0 }
+  .pguess > label {
+    display: block;
+    font-size: var(--t-small);
+    color: var(--ink);
+    font-weight: 500;
+    margin-bottom: 12px;
+  }
+  .pguess-row { display: flex; align-items: center; gap: 18px; max-width: 620px }
+  .pguess-row input[type='range'] { flex: 1; margin: 0; accent-color: var(--accent); cursor: pointer }
+  .pguess-row input[type='range']:disabled { cursor: default; opacity: .6 }
+  .pguess-out {
+    font-family: var(--font-mono);
+    font-size: 16px;
+    color: var(--accent);
+    min-width: 84px;
+    text-align: right;
+  }
+
+  /* ── Reveal: the guess-versus-truth scale ── */
+  .pscale { max-width: 620px; margin: 28px 0 4px }
+  .pscale-track {
+    position: relative;
+    height: 8px;
+    border-radius: 5px;
+    background: linear-gradient(90deg, var(--sig-3) 0%, #EBC9A0 50%, var(--null) 100%);
+    opacity: .85;
+  }
+  .pscale-mid {
+    position: absolute;
+    top: -4px;
+    bottom: -4px;
+    width: 0;
+    border-left: 1px dashed var(--thresh);
+    transform: translateX(-0.5px);
+  }
+  .pmark {
+    position: absolute;
+    top: 50%;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    border: 2px solid var(--panel);
+    transition: left .6s var(--ease);
+  }
+  .pmark-guess { background: var(--accent); z-index: 2 }
+  .pmark-truth { background: var(--sig-3); z-index: 2 }
+  .pscale-ends {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    color: var(--faint);
+    margin-top: 10px;
+    letter-spacing: .02em;
+  }
+  .pscale-nums {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 8px;
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+  }
+  .pn-guess { color: var(--accent) }
+  .pn-truth { color: var(--sig-3) }
+
+  #p-revealbody b { color: var(--ink); font-weight: 500 }
+
+  /* the counter that names the PPV as a natural frequency runs a touch smaller */
+  .counters .cv#p-c-ppv { font-size: 22px; letter-spacing: -0.01em }
+
+  /* ── Reveal: the Gigerenzer quotation block ── */
+  .pquote { max-width: var(--measure); margin: 30px 0 0 }
+  .pquote p { color: var(--body); font-size: var(--t-small); line-height: 1.65 }
+  .pquote blockquote {
+    margin: 14px 0;
+    padding: 14px 20px;
+    border-left: 2px solid var(--ink);
+    background: var(--surface);
+    border-radius: 0 10px 10px 0;
+    color: var(--ink);
+    font-size: var(--t-small);
+    line-height: 1.62;
+  }
+  .pquote .pq-punch { color: var(--ink); font-weight: 500; margin-top: 12px }
+</style>

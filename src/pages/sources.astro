@@ -13,6 +13,7 @@ import { bySlug, kickerOf } from '../lib/illusions';
 
 const illusion = bySlug('the-forking-paths')!;
 const reversal = bySlug('the-reversal')!;
+const positive = bySlug('the-positive')!;
 const description = 'Every primary source behind Statistical Illusions, grouped by illusion, plus the code behind the numbers.';
 ---
 
@@ -221,6 +222,109 @@ const description = 'Every primary source behind Statistical Illusions, grouped 
     </div>
   </section>
 
+  {/* ── Illusion 03 ── */}
+  <section class="slot">
+    <div class="sh">
+      <span class="kick">{kickerOf(positive)}</span>
+      <h2 class="st">{positive.name}</h2>
+    </div>
+
+    <div class="body">
+      <p>
+        The exhibit's Debrief names who caught this and states one honest caveat. Here is the full
+        record behind both, including the honest effect size and the real-world numbers.
+      </p>
+    </div>
+
+    <ol class="srcs">
+      <li>
+        <p class="c">
+          <span class="au">Casscells, W., Schoenberger, A., &amp; Graboys, T. B.</span> (1978).
+          <i>Interpretation by Physicians of Clinical Laboratory Results.</i> New England Journal of
+          Medicine, 299(18), 999–1001. The original doctors-and-Bayes result. Framed carefully: the
+          problem never stated the sensitivity, so the finding is that the format of a question drives
+          the answer, not that physicians cannot reason. The spelling is Graboys, though the
+          literature often prints "Grayboys."
+        </p>
+        <a class="link mono" href="https://doi.org/10.1056/NEJM197811022991808"
+          >doi.org/10.1056/NEJM197811022991808</a
+        >
+      </li>
+      <li>
+        <p class="c">
+          <span class="au">Kahneman, D., &amp; Tversky, A.</span> (1973). <i>On the Psychology of
+          Prediction.</i> Psychological Review, 80(4), 237–251. Where base-rate neglect is named,
+          alongside the finding that it is a tendency, not a law: change the wording and people
+          sometimes lean too hard on the base rate instead.
+        </p>
+        <a class="link mono" href="https://doi.org/10.1037/h0034747">doi.org/10.1037/h0034747</a>
+      </li>
+      <li>
+        <p class="c">
+          <span class="au">Gigerenzer, G., &amp; Hoffrage, U.</span> (1995). <i>How to Improve
+          Bayesian Reasoning Without Instruction: Frequency Formats.</i> Psychological Review, 102(4),
+          684–704. The repair: restating probabilities as natural frequencies, counts sharing one
+          reference class.
+        </p>
+        <a class="link mono" href="https://doi.org/10.1037/0033-295X.102.4.684"
+          >doi.org/10.1037/0033-295X.102.4.684</a
+        >
+      </li>
+      <li>
+        <p class="c">
+          <span class="au">Gigerenzer, G., Gaissmaier, W., Kurz-Milcke, E., Schwartz, L. M., &amp;
+          Woloshin, S.</span> (2007). <i>Helping Doctors and Patients Make Sense of Health
+          Statistics.</i> Psychological Science in the Public Interest, 8(2), 53–96. The mammography
+          problem and the 160 gynaecologists. Volume 8(2) is 2007, though its DOI string reads 2008;
+          both are correct.
+        </p>
+        <a class="link mono" href="https://doi.org/10.1111/j.1539-6053.2008.00033.x"
+          >doi.org/10.1111/j.1539-6053.2008.00033.x</a
+        >
+      </li>
+      <li>
+        <p class="c">
+          <span class="au">McDowell, M., &amp; Jacobs, P.</span> (2017). <i>Meta-Analysis of the
+          Effect of Natural Frequencies on Bayesian Reasoning.</i> Psychological Bulletin, 143(12),
+          1273–1312. The honest effect size, 226 estimates across 35 articles: 24% correct with
+          counts against 4% with probabilities.
+        </p>
+        <a class="link mono" href="https://doi.org/10.1037/bul0000126">doi.org/10.1037/bul0000126</a>
+      </li>
+      <li>
+        <p class="c">
+          <span class="au">Lehman, C. D., et al.</span> (2017). <i>National Performance Benchmarks for
+          Modern Screening Digital Mammography.</i> Radiology, 283(1), 49–58. The real-world number
+          behind the debrief: across 1.6 million screening mammograms, a positive meant cancer about
+          4% of the time.
+        </p>
+        <a class="link mono" href="https://doi.org/10.1148/radiol.2016161174"
+          >doi.org/10.1148/radiol.2016161174</a
+        >
+      </li>
+    </ol>
+
+    <div class="debrief srcextra">
+      <div class="dblock">
+        <div class="dl">The one guardrail</div>
+        <p class="dt">
+          This exhibit is about what a positive result means, never about whether to screen. Screening
+          intervals are a live clinical-policy question the piece has no business in. Nothing here says
+          do not get screened; it says know what a positive result is telling you.
+        </p>
+      </div>
+      <div class="dblock">
+        <div class="dl">Numbers used where, and why two sets</div>
+        <p class="dt">
+          The interactive uses your own dials. The quoted study uses Gigerenzer's published wording, a
+          1% prevalence, 90% sensitivity and a 9% false-positive rate, which lands on his 9 of 98. The
+          real-world 4% is the Breast Cancer Surveillance Consortium's measured figure. Where the
+          textbook and the clinic disagree, both are named rather than blended into one tidy number.
+        </p>
+      </div>
+    </div>
+  </section>
+
   {/* ── The hub outro's Wald panel ── */}
   <section class="slot">
     <div class="sh">
@@ -271,12 +375,11 @@ const description = 'Every primary source behind Statistical Illusions, grouped 
   {/* ── Deferred illusions, stated flatly, no badge ── */}
   <section class="slot">
     <div class="sh">
-      <h2 class="st">Illusions 3 to 4</h2>
+      <h2 class="st">Illusion 4</h2>
     </div>
     <div class="body">
       <p>
-        The Positive and The Missing Planes are prose in the essay for now. Their sources land here
-        the day each one ships.
+        The Missing Planes is prose in the essay for now. Its sources land here the day it ships.
       </p>
     </div>
   </section>

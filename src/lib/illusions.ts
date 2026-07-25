@@ -46,7 +46,8 @@ export const ILLUSIONS: Illusion[] = [
     slug: 'the-positive',
     name: 'The Positive',
     mechanism: 'A FORGOTTEN BASE RATE',
-    live: false,
+    lede: 'You build a test that sounds excellent. It still cries wolf.',
+    live: true,
   },
   {
     number: '04',
